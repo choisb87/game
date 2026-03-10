@@ -1,0 +1,19 @@
+{
+  "title": "Gravity Pulse",
+  "genre": "Arcade / One-Touch Action",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "Tap to flip gravity direction, thread through scrolling neon barriers, build combos, chase high scores. Die fast, retry instantly.",
+  "session_length": "30 seconds to 3 minutes",
+  "target_audience": "Casual to mid-core players who enjoy skill-based arcade games",
+  "monetization": "Premium paid ($2.99-$3.99), no ads, no IAP",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.gravitypulse.game",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}
