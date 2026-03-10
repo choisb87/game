@@ -1,8 +1,8 @@
-# Validation Report — Gravity Pulse
+# Validation Report — Getaway: Night Heist
 
 **Date**: 2026-03-10
 **Platform**: Native Android (Kotlin + Jetpack Compose)
-**Package**: com.gravitypulse.game
+**Package**: com.getaway.nightheist
 
 ---
 
@@ -10,100 +10,75 @@
 
 | Check | Status | Notes |
 |-------|--------|-------|
-| Language: 100% Kotlin | PASS | All 7 source files are .kt, no Java |
-| AndroidManifest.xml | PASS | Launcher intent, portrait lock, configChanges |
-| Single-activity architecture | PASS | One Activity + Compose navigation |
+| Language: 100% Kotlin | PASS | 모든 소스 파일이 .kt, Java 없음 |
+| AndroidManifest.xml | PASS | Launcher intent, portrait lock, 올바른 테마 참조 |
+| Single-activity architecture | PASS | MainActivity + Compose 화면 전환 |
 | Root build.gradle.kts | PASS | AGP 8.2.2, Kotlin 1.9.22 |
-| App build.gradle.kts | PASS | compileSdk=34, minSdk=24, targetSdk=34, Compose enabled |
-| settings.gradle.kts | PASS | Google + MavenCentral repos, FAIL_ON_PROJECT_REPOS |
-| gradle.properties | PASS | AndroidX enabled, nonTransitiveRClass |
-| Gradle wrapper | PASS | gradle-wrapper.properties with Gradle 8.5 (FIXED: was missing) |
-| gradlew script | PASS | Executable shell script present (FIXED: was missing) |
-| ProGuard config | PASS | proguard-rules.pro with Compose keep rules (FIXED: was missing) |
-| Release build config | PASS | isMinifyEnabled=true with proguard |
-| Launcher icon | PASS | Adaptive icon with vector foreground (FIXED: was missing) |
-| Resource files | PASS | strings.xml, colors.xml, themes.xml present |
+| App build.gradle.kts | PASS | compileSdk=34, minSdk=24, targetSdk=34, Compose 활성화 |
+| settings.gradle.kts | PASS | rootProject.name = "GetawayNightHeist" |
+| gradle.properties | PASS | AndroidX, nonTransitiveRClass |
+| Gradle wrapper | PASS | gradle-wrapper.properties (Gradle 8.5) |
+| gradlew script | PASS | 실행 가능한 셸 스크립트 |
+| ProGuard config | PASS | proguard-rules.pro 포함 |
+| Release build config | PASS | isMinifyEnabled=true |
+| Launcher icon | PASS | Adaptive icon with vector foreground |
+| Resource files | PASS | strings.xml, colors.xml, themes.xml |
 | Fullscreen theme | PASS | Theme.Material.NoActionBar + windowFullscreen |
-| Edge-to-edge | PASS | enableEdgeToEdge() + WindowCompat (FIXED: was missing) |
-| Dependencies | PASS | Compose BOM 2024.01.00, core-ktx, lifecycle, activity-compose, material3, foundation |
-| Package structure | PASS | com.gravitypulse.game with game/ subpackage |
-| No unnecessary permissions | PASS | No INTERNET, no storage, no camera |
-| FLAG_KEEP_SCREEN_ON | PASS | Screen stays on during gameplay |
+| Edge-to-edge | PASS | enableEdgeToEdge() 호출 |
+| Dependencies | PASS | Compose BOM 2024.01.00, 필수 라이브러리 포함 |
+| Package structure | PASS | com.getaway.nightheist + game/ 서브패키지 |
+| No unnecessary permissions | PASS | INTERNET 없음, 완전 오프라인 |
 
 ## 2. Gameplay / Fun Checks
 
 | Check | Status | Notes |
 |-------|--------|-------|
-| Core mechanic works | PASS | Tap-to-flip-gravity is clean and responsive |
-| Instant engagement | PASS | Menu → tap → playing in <1 second |
-| Physics feel right | PASS | Gravity 2200, boost -680, velocity capped at 1200 |
-| Wall bouncing | PASS | Dampened bounce (0.4x) at top/bottom edges |
-| Delta-time capped | PASS | dt capped at 33ms prevents physics explosions |
-| Collision detection | PASS | Player radius vs obstacle gap boundaries |
-| Score system | PASS | Increments when obstacle passes below player |
-| Combo system | PASS | Consecutive passes build combo counter (FIXED: was resetting on every tap) |
-| Death feedback | PASS | 20 particles, screen shake, "SHATTERED" overlay |
-| Score particles | PASS | 6 particles per score, colored by obstacle |
-| Tap feedback | PASS | Pulse ring + 4 directional particles on gravity flip |
-| Player trail | PASS | 12-point fading trail behind orb |
-| Obstacle variety | PASS | 3 neon colors (cyan/pink/gold), random gap positions |
-| Progressive difficulty | PASS | Speed scales +0.8%/score (capped at 2.2x), gaps shrink -0.3%/score (min 0.22) |
-| High score persistence | PASS | SharedPreferences storage + display on menu |
-| Death → retry flow | PASS | 1.2s delay then auto-return to menu, tap to replay |
-| Visual polish | PASS | Neon glow, scrolling grid background, orbital menu animation |
-| Player direction indicator | PASS | Color changes cyan/pink + arrow indicator |
-| HUD clarity | PASS | Score top-center, combo below, gravity indicator at bottom |
+| 코어 메카닉 작동 | PASS | 가상 조이스틱 → 전방향 이동 → 벽 충돌 처리 |
+| 경찰 AI 4단계 상태 | PASS | PATROL → ALERT → CHASE → SEARCH 정상 전환 |
+| 시야콘 탐지 | PASS | 각도 + 거리 + 시선 차단(벽) 체크 |
+| 은신 시스템 | PASS | 은신처에서 정지 시 자동 숨기, 시야 무효화 |
+| 보석 수집 | PASS | 타일 접촉 시 수집, 파티클 + 점수 피드백 |
+| 탈출 시스템 | PASS | 전체 보석 수집 → 탈출구 개방 → 접촉 시 클리어 |
+| 체포 시스템 | PASS | 추격 중 경찰 근접 시 체포, 라이프 차감 |
+| 절차적 맵 생성 | PASS | BSP 기반 방+복도, 매 레벨 새 맵 |
+| 레벨 진행 | PASS | 경찰 수/속도/시야 스케일링, 보석 수 증가 |
+| 증원 시스템 | PASS | 타이머 경과 시 추가 경찰 등장 |
+| 점수 시스템 | PASS | 보석 + 시간 보너스 + 스텔스 보너스 |
+| 최고 점수 저장 | PASS | SharedPreferences 저장/로드 |
+| 시각 효과 | PASS | 시야콘, 파티클, 미니맵, 위험 경고, 카메라 추적 |
+| 메뉴 화면 | PASS | 애니메이션 배경, 순찰 도트, 최고 점수 표시 |
+| 오버레이 화면 | PASS | 체포/게임오버/레벨클리어 각각 별도 처리 |
+| deltaTime 상한 | PASS | 0.05초 캡으로 물리 폭발 방지 |
 
-## 3. Market-Fit Checks (vs MARKET_BENCHMARK.md)
+## 3. 기획 검증 (이전안 대비)
 
-| Benchmark Criteria | Status | Notes |
-|-------------------|--------|-------|
-| One mechanic, perfected | PASS | Gravity flip is the sole input — simple, deep |
-| Instant restart (<1s death-to-retry) | PASS | 1.2s death animation then instant menu tap |
-| Visual clarity (always know what killed you) | PASS | Collision triggers particles at exact impact point |
-| Progressive difficulty | PASS | Speed + gap scaling creates natural curve |
-| Score as identity | PASS | High score persisted and shown prominently |
-| Premium model (no ads) | PASS | No ad SDK, no IAP, designed for $2.99-$3.99 |
-| Time to gameplay <2s | PASS | Tap menu → instantly playing |
-| Neon minimalist aesthetic | PASS | Consistent cyan/pink/gold palette on dark background |
-| Sub-second death-to-retry loop | PASS | 1.2s death animation is close; could be shortened |
-| Clear collision feedback | PASS | Particles + screen shake + color |
-| Offline play | PASS | No network permissions, fully offline |
-| Small install size (<10MB) | PASS | No game engine, no heavy assets, vector icon |
-| No tutorials | PASS | Game teaches itself through play |
-| No energy/lives systems | PASS | Unlimited retries |
-| No social leaderboards at launch | PASS | Only local high score |
-| Competitive vs Flappy Bird | PASS | Novel gravity-flip vs common tap-to-jump |
-| Competitive vs Super Hexagon | PASS | Softer opening difficulty, same die-fast-retry-faster loop |
-| Competitive vs Geometry Dash | PASS | Endless format, neon aesthetic adopted |
+| 항목 | 이전 (Gravity Pulse) | 현재 (Getaway) | 개선 |
+|------|---------------------|----------------|------|
+| 판단 깊이 | 탭 타이밍 1가지 | 루트/은신/수집순서 다층 | 대폭 개선 |
+| 역할 체감 | 추상적 오브 | 도둑 vs 경찰 AI | 완전 새로움 |
+| 서사 몰입 | 없음 | 야간 도주 판타지 | 신규 추가 |
+| 레벨 다양성 | 무한 스크롤 | 절차적 생성 레벨 | 대폭 개선 |
+| 감정 곡선 | 긴장→죽음 단조 | 탐색→긴장→안도→탈출 | 풍부해짐 |
+| 반복 동기 | 하이스코어만 | 레벨+점수+보너스+패턴학습 | 다층 |
 
-## 4. Bug List
+## 4. 유료앱 가치 검증
 
-### Fixed (this validation)
-
-| # | Severity | Bug | Fix |
-|---|----------|-----|-----|
-| 1 | CRITICAL | Gradle wrapper missing — project cannot build | Added gradle-wrapper.properties (Gradle 8.5) + gradlew script |
-| 2 | CRITICAL | proguard-rules.pro missing — release build fails | Created with Compose keep rules |
-| 3 | CRITICAL | Launcher icon missing (@mipmap/ic_launcher) — app install fails | Added adaptive icon with vector foreground matching game aesthetic |
-| 4 | HIGH | Combo resets to 0 on every tap — combo system effectively broken, combo display never shows | Removed `combo = 0` from `onTap()`, combo now only resets on death |
-| 5 | MEDIUM | No edge-to-edge support — system bars may overlap game on modern Android | Added `enableEdgeToEdge()` and `WindowCompat.setDecorFitsSystemWindows(false)` |
-
-### Remaining (non-blocking)
-
-| # | Severity | Issue | Notes |
-|---|----------|-------|-------|
-| 1 | LOW | GameInput.kt is unused | `gameTapInput()` extension exists but GameScreen uses inline `pointerInput` instead. Dead code — harmless. |
-| 2 | LOW | No haptic feedback on tap/death | Mentioned in PLAN.md as future consideration |
-| 3 | LOW | No gradlew.bat for Windows builds | Only affects Windows dev environments |
+| 기준 | Status | Notes |
+|------|--------|-------|
+| 광고 없는 몰입 | PASS | 광고 SDK 없음 |
+| 콘텐츠 지속성 | PASS | 절차적 생성으로 무한 레벨 |
+| 전략적 깊이 | PASS | 단순 반사신경 이상의 판단 |
+| 완전한 게임 | PASS | IAP/에너지 시스템 없음 |
+| 오프라인 | PASS | 네트워크 권한 없음 |
+| 소용량 | PASS | 게임 엔진 없음, 벡터 에셋 |
 
 ## 5. Final Verdict
 
 ### PASS
 
-All critical and high-severity bugs have been fixed. The project has:
-- A valid, buildable native Android project structure (Kotlin + Compose)
-- A complete, polished one-touch arcade game with clear fun loop
-- Strong market alignment with premium one-touch arcade genre
-- Proper resource files, build config, and launcher icon
-- No remaining blocking issues
+경찰과 도둑 컨셉으로 전면 재설계 완료. 이전 Gravity Pulse 대비:
+- 기획 깊이: 단순 원터치 → 다층 전략 스텔스
+- 역할 구분: 도둑(플레이어) vs 경찰(AI) 명확
+- 긴장감: 시야콘 기반 "들킬까" 긴장감이 매 순간 유지
+- 반복 동기: 레벨 진행 + 패턴 학습 + 보너스 시스템
+- 유료 가치: 절차적 생성 + 전략 깊이로 프리미엄 정당화

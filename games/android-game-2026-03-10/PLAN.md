@@ -1,99 +1,128 @@
-# Gravity Pulse — Game Design Plan
+# Getaway: Night Heist — 게임 디자인 플랜
 
-## Core Concept
+## 장르 선정 과정
 
-One-touch gravity-flipping arcade game. The player controls an orb that falls
-under gravity; tapping the screen reverses gravity direction. Neon barriers
-scroll upward with gaps the player must thread through.
+### 후보 3개 내부 검토
 
-The design philosophy: **simple to learn, impossible to master**.
+| # | 장르 | 경찰/도둑 역할 구분 | 판단 깊이 | 첫 30초 긴장감 | 반복 동기 |
+|---|------|---------------------|-----------|----------------|-----------|
+| 1 | **탑다운 스텔스 추격** | 도둑=플레이어, 경찰=AI순찰 시야콘 | 루트 계획, 리스크/리워드, 타이밍 | 즉시 (경찰이 눈앞에서 순찰) | 패턴 학습, 레벨 진행, 점수 |
+| 2 | 사이드스크롤 파쿠르 도주 | 도둑=달리기, 경찰=뒤쫓기 | 점프/슬라이드 타이밍 (얕음) | 보통 | 장애물 패턴 |
+| 3 | 턴제 전술 추격전 | 교대 이동 | 높지만 느림 | 낮음 (턴제라 긴장감 약함) | 퍼즐적 만족감 |
 
-## The Fun Loop (First 30 Seconds)
+### 선택: 1번 — 탑다운 스텔스 추격
 
-1. **Instant engagement** (0-3s): No loading screens, no tutorials. Tap the
-   screen, gravity flips, the orb moves. The player understands the mechanic
-   within their first tap.
+**이유**: 경찰과 도둑의 역할이 가장 명확하고, 매 순간 "들킬까 말까"의 긴장감이 코어루프를 관통한다. 판단 요소(루트 선택, 은신 타이밍, 보석 수집 순서)가 단순 반사신경을 넘어선다.
 
-2. **First success** (3-10s): Early barriers have wide gaps. The player
-   successfully passes 2-3 barriers and sees the score increment with particle
-   bursts and combo text. Dopamine hit from immediate positive feedback.
+---
 
-3. **First challenge** (10-20s): Gaps narrow, speed increases. The player
-   must time their gravity flips more precisely. The tension between "when
-   do I flip?" creates the core decision space.
+## 핵심 재미 루프
 
-4. **First death** (15-30s): The orb shatters with screen shake and particles.
-   Score is shown. The player taps to retry instantly. The loop restarts.
+### 코어 루프 (1분 사이클)
+```
+보석 발견 → 경찰 시야 파악 → 루트 결정 → 이동 → [들킴?]
+  ├─ 안 들킴 → 보석 획득 → 다음 보석으로
+  └─ 들킴 → 도주 → 은신처 숨기 → 재시도
+전체 보석 수집 → 탈출구 개방 → 탈출 루트 결정 → 레벨 클리어
+```
 
-The 30-second hook works because:
-- Zero friction from launch to gameplay
-- The gravity-flip mechanic is novel yet instantly intuitive
-- Visual feedback (particles, combos, neon glow) makes every action feel impactful
-- Death is quick and retry is instant — no punishment screens
+### 첫 30초 긴장감 설계
+1. **0-3초**: 맵 로드 즉시 근처에 순찰 경찰이 보임. 시야콘이 움직이는 걸 봄
+2. **3-10초**: 첫 보석이 가까이 있지만 경찰 순찰 경로 위. 타이밍을 봐야 함
+3. **10-20초**: 첫 보석 획득 성공 → 골드 파티클 + "+100" 피드백 → 다음 보석 탐색
+4. **20-30초**: 경찰 시야에 걸릴 뻔한 아슬한 순간 → 화면 가장자리 빨간 경고 → 긴장감 최고조
 
-## Retention Mechanics
+### 왜 이전안(Gravity Pulse)보다 나은가
 
-### Short-term (session-to-session)
-- **High score chase**: SharedPreferences-persisted best score displayed on menu
-- **Combo system**: Consecutive passes build multiplier — creates "one more try" to beat combo record
-- **Progressive difficulty**: Speed and gap narrowing create a skill curve that rewards practice
-- **Visual escalation**: As speed increases, the neon visuals intensify, creating a flow state
+| 항목 | Gravity Pulse | Getaway: Night Heist |
+|------|---------------|----------------------|
+| 판단 깊이 | 탭 타이밍 1가지 | 루트/은신/수집순서/도주 다층 판단 |
+| 역할 체감 | 없음 (추상적 오브) | 도둑으로서 긴장감, 경찰 AI와 두뇌싸움 |
+| 서사 몰입 | 없음 | "야간 도주"라는 명확한 판타지 |
+| 레벨 구조 | 무한 스크롤 (단조) | 절차적 생성 레벨, 점진적 난이도 |
+| 감정 곡선 | 긴장→죽음 단조 반복 | 탐색→긴장→안도→흥분→탈출 풍부한 감정 곡선 |
+| 반복 동기 | 하이스코어만 | 레벨 진행 + 점수 + 스텔스 보너스 + 패턴 학습 |
 
-### Medium-term (week-over-week)
-- **Skill ceiling**: Physics-based movement means there's always room to improve timing
-- **Muscle memory development**: The gravity-flip timing becomes instinctive over sessions
-- **Score milestones**: Natural plateaus at ~20, ~50, ~100 that feel like achievements when broken
+---
 
-### Long-term (month-over-month)
-- **Zen play**: Once skilled, the game becomes meditative — a quick flow-state break
-- **Sharing moments**: Exceptional scores or close calls create shareable moments
+## 유료앱으로서 가치 포인트
 
-## Paid App Rationale
+### 가격: $3.99
 
-### Why Premium ($2.99-$3.99)
-1. **No ads breaking flow**: The game is a flow-state experience. Interstitial ads
-   would destroy the core appeal. Banner ads would compromise the full-screen
-   neon aesthetic.
+1. **광고 없는 몰입**: 긴장감이 핵심인 스텔스 게임에서 광고는 치명적. 프리미엄으로 끊김 없는 경험 보장
+2. **절차적 레벨 생성**: 매번 다른 맵 → 무한 콘텐츠. "몇 판만 하면 끝"이 아님
+3. **전략적 깊이**: 단순 반사신경이 아닌 두뇌 게임 → 유료 가치 체감
+4. **완전한 게임**: IAP 없음, 잠금 콘텐츠 없음, 에너지 시스템 없음. 결제 = 풀 게임
+5. **오프라인 플레이**: 인터넷 불필요, 작은 용량, 배터리 효율적
 
-2. **Complete experience**: Everything unlocked from the start. No paywalls,
-   no currencies, no energy systems. The player gets the full game.
+### 시장 포지셔닝
+- 경쟁작: 스텔스 장르 모바일에서 희소 (대부분 PC/콘솔)
+- 차별점: Pac-Man의 접근성 + 스텔스 게임의 긴장감을 모바일 터치에 최적화
 
-3. **Trust signal**: A paid price says "this is worth your time." Free games
-   with ads train users to expect interruption. Premium says quality.
+---
 
-4. **Sustainable without manipulation**: No need to design frustration loops
-   to drive ad views or IAP. The game can be purely fun-optimized.
+## 게임 메카닉 상세
 
-### Premium Positioning
-- Clean, ad-free experience
-- No internet required (fully offline)
-- Small install size (<10 MB)
-- Battery efficient (Compose Canvas, no heavy game engine)
-- Respects user attention — no notifications, no "come back" nags
+### 플레이어 (도둑)
+- 가상 조이스틱으로 전방향 이동
+- 기본 속도 > 순찰 경찰, < 추격 경찰
+- 은신처(파란 타일)에서 정지 시 자동 은신
+- 은신 중에는 경찰 시야에 걸리지 않음
 
-## Technical Design Decisions
+### 경찰 AI
+- **순찰 (PATROL)**: 정해진 루트를 따라 이동, 시야콘 표시
+- **경계 (ALERT)**: 플레이어 발견 시 0.6초 경계 → 방향 전환
+- **추격 (CHASE)**: 플레이어를 직접 추격, 속도 증가
+- **수색 (SEARCH)**: 플레이어를 놓치면 마지막 위치에서 주위 수색
+- 레벨이 높아질수록: 더 빠르고, 시야 넓고, 수가 많음
 
-### Why Jetpack Compose (not a game engine)?
-- **Lightweight**: No Unity/Godot overhead for a 2D arcade game
-- **Native performance**: Direct Canvas drawing at 60fps
-- **Small APK**: Minimal dependencies
-- **Modern Android**: Compose is the standard UI toolkit; no legacy View system
+### 레벨 시스템
+- BSP 기반 절차적 맵 생성 (방 + 복도)
+- 보석 수: 3개(레벨1) → 최대 8개
+- 경찰 수: 2명(레벨1) → 최대 6명
+- 증원 타이머: 45초(레벨1) → 최소 25초
+- 은신처 배치, 라이프 3개
 
-### State Architecture
-- Immutable `GameState` data class — all game state in one place
-- Pure function updates: `GameState.update(dt)` returns new state
-- Compose recomposition drives rendering — no manual invalidation
-- `LaunchedEffect` + `withFrameNanos` for frame-synced game loop
+### 점수 체계
+- 보석 수집: 100 × 레벨
+- 시간 보너스: 남은 시간 × 10
+- 스텔스 보너스: 한 번도 안 들키면 +500
+- 누적 점수로 최고 기록 경쟁
 
-### Physics
-- Constant gravity with direction flip on tap
-- Velocity clamping prevents runaway speed
-- Wall bouncing with dampening keeps the orb in bounds
-- Slight horizontal sine drift adds visual interest without affecting gameplay
+---
 
-## Future Considerations (Post-Launch)
+## 기술 설계
 
-- Color themes / visual skins (unlocked by score milestones, not IAP)
-- Daily challenge mode (fixed seed, leaderboard)
-- Haptic feedback on tap, collision, and score events
-- Accessibility: adjustable game speed, high-contrast mode
+### 아키텍처
+- 불변 `GameState` data class → 순수 함수 업데이트
+- Compose Canvas로 60fps 렌더링
+- `LaunchedEffect` + `awaitFrame`으로 게임 루프
+- SharedPreferences로 최고 점수 저장
+
+### 파일 구조
+```
+game/
+  GameState.kt    — 모든 데이터 클래스와 상태 정의
+  GameMap.kt      — BSP 절차적 맵 생성
+  GameLogic.kt    — 게임 업데이트, 경찰 AI, 충돌 판정
+  GameRenderer.kt — Canvas 렌더링 (타일, 시야콘, HUD, 미니맵)
+  GameScreen.kt   — Compose 화면 + 게임 루프 + 입력 처리
+  MenuScreen.kt   — 메인 메뉴 화면
+```
+
+### 렌더링 특징
+- 카메라 추적 (플레이어 중심 부드러운 팔로우)
+- 경찰 시야콘 시각화 (상태별 색상 변화)
+- 미니맵 (우하단, 전체 맵 + 경찰/플레이어 위치)
+- 위험 경고 오버레이 (화면 가장자리 빨간 바이넷)
+- 보석 수집 파티클 효과
+- 가상 조이스틱 UI
+
+---
+
+## 향후 확장 가능성 (출시 후)
+- 아이템 시스템: 연막탄, 변장, 소음 유인
+- 경찰 유형 추가: 형사(단서 추적), 경찰견(냄새 추적)
+- 일일 도전 모드 (고정 시드)
+- 시각 테마/스킨 (점수 마일스톤으로 해금)
+- 햅틱 피드백

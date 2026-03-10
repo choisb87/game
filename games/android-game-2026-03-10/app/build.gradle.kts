@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.gravitypulse.game"
+    namespace = "com.getaway.nightheist"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.gravitypulse.game"
+        applicationId = "com.getaway.nightheist"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

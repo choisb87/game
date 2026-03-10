@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GravityPulse"
+rootProject.name = "GetawayNightHeist"
 include(":app")
