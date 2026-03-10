@@ -19,11 +19,11 @@ fun GameScreen(
     var gameState by remember { mutableStateOf(GameLogic.initLevel(1, loadBestScore(context))) }
     var lastFrameTime by remember { mutableLongStateOf(0L) }
 
-    // Game loop
+    // Game loop - runs during PLAYING and LEVEL_INTRO phases
     LaunchedEffect(gameState.phase) {
-        if (gameState.phase == GamePhase.PLAYING) {
+        if (gameState.phase == GamePhase.PLAYING || gameState.phase == GamePhase.LEVEL_INTRO) {
             lastFrameTime = awaitFrame()
-            while (gameState.phase == GamePhase.PLAYING) {
+            while (gameState.phase == GamePhase.PLAYING || gameState.phase == GamePhase.LEVEL_INTRO) {
                 val frameTime = awaitFrame()
                 val dt = ((frameTime - lastFrameTime) / 1_000_000_000f).coerceAtMost(0.05f)
                 lastFrameTime = frameTime
@@ -65,8 +65,17 @@ fun GameScreen(
             .pointerInput(gameState.phase) {
                 detectTapGestures {
                     when (gameState.phase) {
+                        GamePhase.LEVEL_INTRO -> {
+                            // Skip intro
+                            val spawnF = gameState.map.spawnPoint.toFloat()
+                            gameState = gameState.copy(
+                                phase = GamePhase.PLAYING,
+                                introTimer = 0f,
+                                cameraX = spawnF.x,
+                                cameraY = spawnF.y
+                            )
+                        }
                         GamePhase.CAUGHT -> {
-                            // Retry level with remaining lives
                             gameState = GameLogic.initLevel(
                                 gameState.level,
                                 gameState.bestScore,
@@ -77,12 +86,14 @@ fun GameScreen(
                         GamePhase.GAME_OVER -> {
                             val best = maxOf(gameState.bestScore, gameState.totalScore)
                             saveBestScore(context, best)
+                            saveLevelsCleared(context, gameState.level - 1)
                             onBackToMenu()
                         }
                         GamePhase.LEVEL_COMPLETE -> {
                             val newTotal = gameState.totalScore
                             val best = maxOf(gameState.bestScore, newTotal)
                             saveBestScore(context, best)
+                            saveLevelsCleared(context, gameState.level)
                             gameState = GameLogic.initLevel(
                                 gameState.level + 1,
                                 best,
@@ -108,6 +119,7 @@ fun GameScreen(
 
 private const val PREFS_NAME = "getaway_prefs"
 private const val KEY_BEST_SCORE = "best_score"
+private const val KEY_LEVELS_CLEARED = "levels_cleared"
 
 fun loadBestScore(context: Context): Int {
     return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -115,8 +127,26 @@ fun loadBestScore(context: Context): Int {
 }
 
 fun saveBestScore(context: Context, score: Int) {
-    context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        .edit()
-        .putInt(KEY_BEST_SCORE, score)
-        .apply()
+    val current = loadBestScore(context)
+    if (score > current) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(KEY_BEST_SCORE, score)
+            .apply()
+    }
+}
+
+fun loadLevelsCleared(context: Context): Int {
+    return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        .getInt(KEY_LEVELS_CLEARED, 0)
+}
+
+fun saveLevelsCleared(context: Context, level: Int) {
+    val current = loadLevelsCleared(context)
+    if (level > current) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(KEY_LEVELS_CLEARED, level)
+            .apply()
+    }
 }

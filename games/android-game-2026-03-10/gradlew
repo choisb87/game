@@ -39,9 +39,6 @@ else
     fi
 fi
 
-# Setup classpath
-CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
-
 # Determine APP_HOME
 PRG="$0"
 while [ -h "$PRG" ] ; do
@@ -58,8 +55,11 @@ cd "`dirname \"$PRG\"`/" >/dev/null
 APP_HOME="`pwd -P`"
 cd "$SAVED" >/dev/null
 
+# Setup classpath
+CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+
 # Collect all arguments
-DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+DEFAULT_JVM_OPTS='-Xmx64m -Xms64m'
 
 exec "$JAVACMD" \
     $DEFAULT_JVM_OPTS \

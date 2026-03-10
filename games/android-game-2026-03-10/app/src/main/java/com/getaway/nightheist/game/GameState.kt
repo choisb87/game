@@ -1,12 +1,14 @@
 package com.getaway.nightheist.game
 
 import androidx.compose.ui.geometry.Offset
-import kotlin.math.atan2
 
 // --- Tile types ---
 enum class TileType {
     FLOOR, WALL, LOOT, EXIT, HIDESPOT
 }
+
+// --- Power-up types ---
+enum class PowerUpType { SMOKE, SPEED, GHOST }
 
 // --- Grid position ---
 data class GridPos(val x: Int, val y: Int) {
@@ -57,10 +59,11 @@ data class Cop(
     val alertTimer: Float = 0f,
     val chaseSpeed: Float = 3.2f,
     val visionRange: Float = 4.5f,
-    val visionAngle: Float = 70f, // half-angle in degrees
+    val visionAngle: Float = 70f,
     val lastKnownPlayerX: Float = 0f,
     val lastKnownPlayerY: Float = 0f,
-    val searchTimer: Float = 0f
+    val searchTimer: Float = 0f,
+    val stunTimer: Float = 0f
 )
 
 // --- Player ---
@@ -74,6 +77,13 @@ data class Player(
     val isRunning: Boolean = true
 )
 
+// --- Power-up item on map ---
+data class PowerUpItem(
+    val x: Float,
+    val y: Float,
+    val type: PowerUpType
+)
+
 // --- Visual effects ---
 data class Particle(
     val x: Float,
@@ -84,7 +94,7 @@ data class Particle(
     val type: ParticleType = ParticleType.LOOT
 )
 
-enum class ParticleType { LOOT, ALERT, ESCAPE, CAUGHT }
+enum class ParticleType { LOOT, ALERT, ESCAPE, CAUGHT, POWERUP, COMBO }
 
 data class FloatingText(
     val x: Float,
@@ -94,7 +104,7 @@ data class FloatingText(
 )
 
 // --- Game phase ---
-enum class GamePhase { PLAYING, CAUGHT, ESCAPED, LEVEL_COMPLETE, GAME_OVER }
+enum class GamePhase { LEVEL_INTRO, PLAYING, CAUGHT, ESCAPED, LEVEL_COMPLETE, GAME_OVER }
 
 // --- Screen state ---
 enum class ScreenState { MENU, PLAYING, RESULT }
@@ -108,7 +118,7 @@ data class GameState(
     val totalLoot: Int = 0,
     val lootPositions: List<GridPos> = emptyList(),
     val timeElapsed: Float = 0f,
-    val backupTimer: Float = 45f, // seconds until backup arrives
+    val backupTimer: Float = 45f,
     val backupArrived: Boolean = false,
     val level: Int = 1,
     val phase: GamePhase = GamePhase.PLAYING,
@@ -127,8 +137,20 @@ data class GameState(
     val joystickCenter: Offset = Offset.Zero,
     val joystickDrag: Offset = Offset.Zero,
     val joystickActive: Boolean = false,
-    val spotWarning: Float = 0f, // 0-1 edge glow when cop is close
-    val exitUnlocked: Boolean = false
+    val spotWarning: Float = 0f,
+    val exitUnlocked: Boolean = false,
+    // Premium features
+    val powerUps: List<PowerUpItem> = emptyList(),
+    val activePowerUp: PowerUpType? = null,
+    val powerUpTimer: Float = 0f,
+    val comboCount: Int = 0,
+    val comboTimer: Float = 0f,
+    val screenShake: Float = 0f,
+    val introTimer: Float = 0f,
+    val introCamStartX: Float = 0f,
+    val introCamStartY: Float = 0f,
+    val maxCombo: Int = 0,
+    val neverSpotted: Boolean = true
 ) {
     companion object {
         const val PLAYER_RADIUS = 0.3f
@@ -136,5 +158,7 @@ data class GameState(
         const val LOOT_RADIUS = 0.3f
         const val CATCH_DISTANCE = 0.6f
         const val HIDE_CHECK_RADIUS = 0.4f
+        const val POWERUP_RADIUS = 0.5f
+        const val COMBO_WINDOW = 4f
     }
 }
