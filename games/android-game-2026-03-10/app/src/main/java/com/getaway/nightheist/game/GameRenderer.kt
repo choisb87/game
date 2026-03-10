@@ -92,8 +92,21 @@ object GameRenderer {
                     when (tile) {
                         TileType.WALL -> {
                             drawRect(COLOR_WALL, Offset(screenX, screenY), tileRect)
+                            // Top edge highlight (light hits from above)
                             if (state.map.tileAt(x, y - 1) != TileType.WALL) {
-                                drawRect(COLOR_WALL_EDGE, Offset(screenX, screenY), Size(tileSize, 2f))
+                                drawRect(COLOR_WALL_EDGE, Offset(screenX, screenY), Size(tileSize, 2.5f))
+                            }
+                            // Bottom shadow (depth illusion)
+                            if (state.map.tileAt(x, y + 1) != TileType.WALL) {
+                                drawRect(Color(0xFF0A0D12), Offset(screenX, screenY + tileSize - 3f), Size(tileSize, 3f))
+                            }
+                            // Right shadow
+                            if (state.map.tileAt(x + 1, y) != TileType.WALL) {
+                                drawRect(Color(0xFF0A0D12).copy(alpha = 0.5f), Offset(screenX + tileSize - 2f, screenY), Size(2f, tileSize))
+                            }
+                            // Inner noise texture (subtle pattern)
+                            if ((x + y * 7) % 3 == 0) {
+                                drawRect(Color.White.copy(alpha = 0.015f), Offset(screenX + 2f, screenY + 2f), Size(tileSize - 4f, tileSize - 4f))
                             }
                         }
                         TileType.FLOOR -> {
@@ -106,21 +119,29 @@ object GameRenderer {
                         }
                         TileType.EXIT -> {
                             val exitColor = if (state.exitUnlocked) COLOR_EXIT_OPEN else COLOR_EXIT_LOCKED
-                            drawRect(exitColor.copy(alpha = 0.3f), Offset(screenX, screenY), tileRect)
+                            drawRect(exitColor.copy(alpha = 0.2f), Offset(screenX, screenY), tileRect)
                             if (state.exitUnlocked) {
                                 val pulse = (sin(state.timeElapsed * 4f) * 0.3f + 0.7f).toFloat()
-                                drawRect(
-                                    exitColor.copy(alpha = pulse),
-                                    Offset(screenX + 2, screenY + 2),
-                                    Size(tileSize - 4, tileSize - 4),
-                                    style = Stroke(3f)
-                                )
-                                // Arrow symbol
+                                // Outer glow ring
+                                drawCircle(exitColor.copy(alpha = pulse * 0.1f), tileSize * 1.2f, Offset(screenX + tileSize / 2, screenY + tileSize / 2))
+                                // Pulsing border (double)
+                                drawRect(exitColor.copy(alpha = pulse), Offset(screenX + 2, screenY + 2), Size(tileSize - 4, tileSize - 4), style = Stroke(3f))
+                                drawRect(exitColor.copy(alpha = pulse * 0.5f), Offset(screenX + 5, screenY + 5), Size(tileSize - 10, tileSize - 10), style = Stroke(1.5f))
+                                // Door icon (arch shape)
                                 val cx = screenX + tileSize / 2
                                 val cy = screenY + tileSize / 2
-                                drawLine(exitColor.copy(alpha = pulse), Offset(cx - 8f, cy), Offset(cx + 8f, cy), 3f)
-                                drawLine(exitColor.copy(alpha = pulse), Offset(cx + 3f, cy - 5f), Offset(cx + 8f, cy), 3f)
-                                drawLine(exitColor.copy(alpha = pulse), Offset(cx + 3f, cy + 5f), Offset(cx + 8f, cy), 3f)
+                                val doorW = tileSize * 0.3f
+                                val doorH = tileSize * 0.35f
+                                drawRect(exitColor.copy(alpha = pulse * 0.6f), Offset(cx - doorW / 2, cy - doorH / 4), Size(doorW, doorH))
+                                // Arch top
+                                drawArc(exitColor.copy(alpha = pulse * 0.6f), startAngle = 180f, sweepAngle = 180f, useCenter = true, topLeft = Offset(cx - doorW / 2, cy - doorH / 2 - doorH / 4), size = Size(doorW, doorH / 2))
+                            } else {
+                                // Locked: X mark
+                                val cx = screenX + tileSize / 2
+                                val cy = screenY + tileSize / 2
+                                val s = tileSize * 0.15f
+                                drawLine(exitColor.copy(alpha = 0.4f), Offset(cx - s, cy - s), Offset(cx + s, cy + s), 2f)
+                                drawLine(exitColor.copy(alpha = 0.4f), Offset(cx + s, cy - s), Offset(cx - s, cy + s), 2f)
                             }
                         }
                         TileType.HIDESPOT -> {
@@ -200,15 +221,49 @@ object GameRenderer {
 
     private fun drawLoot(scope: DrawScope, cx: Float, cy: Float, tileSize: Float, time: Float) {
         val bobY = sin(time * 3f) * tileSize * 0.05f
-        val size = tileSize * 0.25f
+        val size = tileSize * 0.3f
         val sparkle = (sin(time * 5f) * 0.3f + 0.7f).toFloat()
+        val y = cy + bobY
 
         // Outer glow
-        scope.drawCircle(COLOR_LOOT.copy(alpha = sparkle * 0.2f), radius = size * 1.8f, center = Offset(cx, cy + bobY))
-        // Main
-        scope.drawCircle(COLOR_LOOT.copy(alpha = sparkle), radius = size, center = Offset(cx, cy + bobY))
-        // Inner sparkle
-        scope.drawCircle(Color.White.copy(alpha = sparkle * 0.6f), radius = size * 0.4f, center = Offset(cx - size * 0.2f, cy + bobY - size * 0.2f))
+        scope.drawCircle(COLOR_LOOT.copy(alpha = sparkle * 0.15f), radius = size * 2.2f, center = Offset(cx, y))
+
+        // Diamond shape (gem cut look)
+        val gemPath = Path().apply {
+            moveTo(cx, y - size)           // top
+            lineTo(cx + size * 0.8f, y - size * 0.2f) // top-right facet
+            lineTo(cx + size, y + size * 0.1f)  // right
+            lineTo(cx, y + size)           // bottom point
+            lineTo(cx - size, y + size * 0.1f)  // left
+            lineTo(cx - size * 0.8f, y - size * 0.2f) // top-left facet
+            close()
+        }
+        scope.drawPath(gemPath, COLOR_LOOT.copy(alpha = sparkle))
+
+        // Inner facet (left half lighter)
+        val facetLeft = Path().apply {
+            moveTo(cx, y - size)
+            lineTo(cx, y + size)
+            lineTo(cx - size, y + size * 0.1f)
+            lineTo(cx - size * 0.8f, y - size * 0.2f)
+            close()
+        }
+        scope.drawPath(facetLeft, Color.White.copy(alpha = sparkle * 0.15f))
+
+        // Top facet highlight
+        val facetTop = Path().apply {
+            moveTo(cx, y - size)
+            lineTo(cx + size * 0.3f, y - size * 0.3f)
+            lineTo(cx - size * 0.3f, y - size * 0.3f)
+            close()
+        }
+        scope.drawPath(facetTop, Color.White.copy(alpha = sparkle * 0.4f))
+
+        // Sparkle star
+        val starAlpha = ((sin(time * 7f + cx) + 1f) / 2f * 0.8f).toFloat()
+        val starSize = size * 0.2f
+        scope.drawLine(Color.White.copy(alpha = starAlpha), Offset(cx - starSize, y - size * 0.4f), Offset(cx + starSize, y - size * 0.4f), 1.5f)
+        scope.drawLine(Color.White.copy(alpha = starAlpha), Offset(cx, y - size * 0.4f - starSize), Offset(cx, y - size * 0.4f + starSize), 1.5f)
     }
 
     private fun drawPowerUp(scope: DrawScope, pu: PowerUpItem, tileSize: Float, ox: Float, oy: Float, time: Float) {
@@ -324,39 +379,67 @@ object GameRenderer {
         // Glow
         if (!p.isHiding) {
             val glowColor = if (isSpeed) COLOR_POWERUP_SPEED else if (isGhost) COLOR_POWERUP_GHOST else color
-            scope.drawCircle(glowColor.copy(alpha = 0.15f), radius * 2f, Offset(cx, cy))
+            scope.drawCircle(glowColor.copy(alpha = 0.12f), radius * 2.5f, Offset(cx, cy))
+            scope.drawCircle(glowColor.copy(alpha = 0.08f), radius * 3.5f, Offset(cx, cy))
         }
 
-        // Sneak indicator (smaller glow when sneaking)
+        // Sneak indicator (crouching visual)
         if (!p.isRunning && !p.isHiding && p.moveDir != Offset.Zero) {
-            scope.drawCircle(COLOR_PLAYER.copy(alpha = 0.08f), radius * 1.3f, Offset(cx, cy))
+            scope.drawCircle(COLOR_PLAYER.copy(alpha = 0.06f), radius * 1.3f, Offset(cx, cy))
         }
-
-        // Body
-        scope.drawCircle(color, radius, Offset(cx, cy))
 
         // Speed trail
         if (isSpeed && p.moveDir != Offset.Zero) {
-            for (i in 1..3) {
-                val trailX = cx - p.moveDir.x * radius * i * 0.8f
-                val trailY = cy - p.moveDir.y * radius * i * 0.8f
-                scope.drawCircle(COLOR_POWERUP_SPEED.copy(alpha = 0.2f / i), radius * (1f - i * 0.15f), Offset(trailX, trailY))
+            for (i in 1..4) {
+                val trailX = cx - p.moveDir.x * radius * i * 0.7f
+                val trailY = cy - p.moveDir.y * radius * i * 0.7f
+                scope.drawCircle(COLOR_POWERUP_SPEED.copy(alpha = 0.25f / i), radius * (1f - i * 0.12f), Offset(trailX, trailY))
             }
+        }
+
+        // Body (head)
+        scope.drawCircle(color, radius, Offset(cx, cy))
+        // Body outline for definition
+        scope.drawCircle(color.copy(alpha = 0.6f), radius, Offset(cx, cy), style = Stroke(1.5f))
+
+        // Mask band (thief look)
+        val maskY = cy - radius * 0.1f
+        val maskH = radius * 0.35f
+        scope.drawRect(
+            Color(0xFF0D1117).copy(alpha = if (isGhost) 0.3f else 0.85f),
+            Offset(cx - radius * 0.85f, maskY - maskH / 2),
+            Size(radius * 1.7f, maskH)
+        )
+
+        // Eyes on mask
+        val eyeRadius = radius * 0.13f
+        val eyeY = maskY
+        val eyeSpacing = radius * 0.35f
+        val eyeColor = if (isGhost) Color.White.copy(alpha = 0.4f) else Color.White.copy(alpha = 0.95f)
+
+        if (p.moveDir != Offset.Zero) {
+            val lookOffsetX = p.moveDir.x * radius * 0.08f
+            val lookOffsetY = p.moveDir.y * radius * 0.08f
+            scope.drawCircle(eyeColor, eyeRadius, Offset(cx - eyeSpacing + lookOffsetX, eyeY + lookOffsetY))
+            scope.drawCircle(eyeColor, eyeRadius, Offset(cx + eyeSpacing + lookOffsetX, eyeY + lookOffsetY))
+        } else {
+            scope.drawCircle(eyeColor, eyeRadius, Offset(cx - eyeSpacing, eyeY))
+            scope.drawCircle(eyeColor, eyeRadius, Offset(cx + eyeSpacing, eyeY))
+        }
+
+        // Loot bag (small sack on back when carrying loot)
+        if (state.lootCollected > 0) {
+            val bagOffsetX = if (p.moveDir != Offset.Zero) -p.moveDir.x * radius * 0.4f else radius * 0.5f
+            val bagOffsetY = if (p.moveDir != Offset.Zero) -p.moveDir.y * radius * 0.4f else radius * 0.3f
+            val bagSize = radius * (0.35f + state.lootCollected * 0.03f).coerceAtMost(0.55f)
+            scope.drawCircle(Color(0xFFA0855C), bagSize, Offset(cx + bagOffsetX, cy + bagOffsetY))
+            scope.drawCircle(Color(0xFF8B7345), bagSize, Offset(cx + bagOffsetX, cy + bagOffsetY), style = Stroke(1f))
         }
 
         // Ghost shimmer
         if (isGhost) {
             val shimmer = (sin(state.timeElapsed * 8f) * 0.3f + 0.3f).toFloat()
-            scope.drawCircle(Color.White.copy(alpha = shimmer), radius * 1.2f, Offset(cx, cy), style = Stroke(1.5f))
-        }
-
-        // Eye/direction
-        if (p.moveDir != Offset.Zero) {
-            val dirX = p.moveDir.x * radius * 0.5f
-            val dirY = p.moveDir.y * radius * 0.5f
-            scope.drawCircle(Color.White.copy(alpha = 0.9f), radius * 0.2f, Offset(cx + dirX, cy + dirY))
-        } else {
-            scope.drawCircle(Color.White.copy(alpha = 0.7f), radius * 0.15f, Offset(cx, cy))
+            scope.drawCircle(Color.White.copy(alpha = shimmer), radius * 1.3f, Offset(cx, cy), style = Stroke(2f))
         }
 
         // Hiding indicator
@@ -364,10 +447,16 @@ object GameRenderer {
             val hidePulse = (sin(state.timeElapsed * 3f) * 0.2f + 0.4f).toFloat()
             scope.drawCircle(
                 COLOR_HIDESPOT_BORDER.copy(alpha = hidePulse),
-                radius * 1.5f,
+                radius * 1.6f,
                 Offset(cx, cy),
-                style = Stroke(2f)
+                style = Stroke(2.5f)
             )
+            // "Z" sleep indicator
+            val zAlpha = (sin(state.timeElapsed * 2f) * 0.3f + 0.5f).toFloat()
+            val zOffset = sin(state.timeElapsed * 1.5f).toFloat() * 3f
+            scope.drawContext.canvas.nativeCanvas.let { canvas ->
+                drawText(canvas, "z", cx + radius * 1.2f, cy - radius * 0.8f + zOffset, radius * 0.5f, COLOR_HIDESPOT_BORDER, alpha = zAlpha)
+            }
         }
     }
 
@@ -619,37 +708,66 @@ object GameRenderer {
 
             when (state.phase) {
                 GamePhase.LEVEL_INTRO -> {
-                    // Level intro overlay
-                    val alpha = (state.introTimer / 0.5f).coerceAtMost(1f) // fade in first 0.5s
                     val totalIntro = if (state.level == 1) 3.5f else 2.0f
                     val progress = 1f - (state.introTimer / totalIntro)
 
-                    // Dim edges
-                    drawRect(Color.Black.copy(alpha = 0.3f * (1f - progress)), Offset.Zero, size)
+                    // Cinematic letterbox bars (top and bottom)
+                    val barHeight = 60f * (1f - progress).coerceIn(0f, 1f)
+                    drawRect(Color.Black, Offset.Zero, Size(w, barHeight))
+                    drawRect(Color.Black, Offset(0f, h - barHeight), Size(w, barHeight))
 
-                    // Level number
+                    // Dim overlay that fades as camera pans
+                    drawRect(Color.Black.copy(alpha = 0.25f * (1f - progress)), Offset.Zero, size)
+
+                    // Level number with dramatic scale
                     val levelAlpha = if (progress < 0.7f) 1f else ((1f - progress) / 0.3f).coerceIn(0f, 1f)
-                    drawText(nativeCanvas, "LEVEL ${state.level}", w / 2f, h * 0.4f, 56f, COLOR_PLAYER, alpha = levelAlpha)
+                    val levelScale = if (progress < 0.1f) 1f + (0.1f - progress) * 5f else 1f
+                    val levelSize = 60f * levelScale
 
-                    // Subtitle
+                    // Glow behind level text
+                    drawCircle(COLOR_PLAYER.copy(alpha = levelAlpha * 0.08f), 120f, Offset(w / 2f, h * 0.38f))
+
+                    drawText(nativeCanvas, "LEVEL ${state.level}", w / 2f, h * 0.4f, levelSize, COLOR_PLAYER, alpha = levelAlpha)
+
+                    // Subtitle with more personality
                     val subtitle = when {
-                        state.level == 1 -> "Collect all loot. Avoid the cops."
-                        state.level <= 3 -> "More cops. Stay sharp."
+                        state.level == 1 -> "The heist begins..."
+                        state.level == 2 -> "They won't make it easy."
+                        state.level == 3 -> "Security is tightening."
                         state.level <= 5 -> "They're getting faster..."
-                        else -> "Good luck."
+                        state.level <= 7 -> "Only the best survive."
+                        else -> "Good luck. You'll need it."
                     }
-                    drawText(nativeCanvas, subtitle, w / 2f, h * 0.4f + 40f, 22f, COLOR_TEXT, alpha = levelAlpha * 0.7f)
+                    val subAlpha = if (progress > 0.15f) levelAlpha * 0.8f else 0f
+                    drawText(nativeCanvas, subtitle, w / 2f, h * 0.4f + 42f, 22f, COLOR_TEXT, alpha = subAlpha)
+
+                    // Mission info bar
+                    if (progress > 0.2f && progress < 0.85f) {
+                        val infoAlpha = ((progress - 0.2f) / 0.15f).coerceAtMost(1f) * ((0.85f - progress) / 0.15f).coerceAtMost(1f)
+                        val infoY = h * 0.48f
+
+                        // Gem count + cop count
+                        drawText(nativeCanvas, "${state.totalLoot} gems  •  ${state.cops.size} cops", w / 2f, infoY, 18f, COLOR_LOOT, alpha = infoAlpha * 0.7f)
+                    }
 
                     // Tutorial on level 1
                     if (state.level == 1 && state.introTimer > 1f) {
                         val tutAlpha = ((state.introTimer - 1f) / 1f).coerceIn(0f, 0.8f)
-                        val baseY = h * 0.55f
+                        val baseY = h * 0.56f
+
+                        // Tutorial background panel
+                        drawRect(Color.Black.copy(alpha = tutAlpha * 0.5f), Offset(w * 0.08f, baseY - 20f), Size(w * 0.84f, 155f))
+
                         drawText(nativeCanvas, "DRAG to move", w / 2f, baseY, 20f, COLOR_TEXT, alpha = tutAlpha)
                         drawText(nativeCanvas, "Short drag = SNEAK  |  Long drag = RUN", w / 2f, baseY + 28f, 16f, COLOR_HIDESPOT_BORDER, alpha = tutAlpha)
                         drawText(nativeCanvas, "Avoid vision cones", w / 2f, baseY + 56f, 20f, COLOR_COP_ALERT, alpha = tutAlpha)
                         drawText(nativeCanvas, "Stand on blue tiles to HIDE", w / 2f, baseY + 84f, 20f, COLOR_HIDESPOT_BORDER, alpha = tutAlpha)
                         drawText(nativeCanvas, "Collect items for POWER-UPS", w / 2f, baseY + 112f, 20f, COLOR_POWERUP_SMOKE, alpha = tutAlpha)
                     }
+
+                    // "TAP TO SKIP" hint
+                    val skipAlpha = (sin(state.introTimer * 3f) * 0.2f + 0.3f).toFloat()
+                    drawText(nativeCanvas, "TAP TO SKIP", w / 2f, h - barHeight - 15f, 14f, COLOR_TEXT, alpha = skipAlpha)
                 }
 
                 GamePhase.CAUGHT -> {
@@ -671,64 +789,98 @@ object GameRenderer {
                 }
 
                 GamePhase.GAME_OVER -> {
-                    drawRect(Color.Black.copy(alpha = 0.88f), Offset.Zero, size)
+                    drawRect(Color.Black.copy(alpha = 0.9f), Offset.Zero, size)
+
+                    // Red warning glow
+                    drawCircle(COLOR_WARNING.copy(alpha = 0.05f), 180f, Offset(w / 2f, h / 2f - 80f))
 
                     drawText(nativeCanvas, "GAME OVER", w / 2f, h / 2f - 100f, 56f, COLOR_WARNING)
 
-                    // Final score
-                    drawText(nativeCanvas, "SCORE", w / 2f, h / 2f - 30f, 20f, Color(0xFF888888))
-                    drawText(nativeCanvas, "${state.totalScore}", w / 2f, h / 2f + 10f, 44f, COLOR_LOOT)
+                    // Decorative line
+                    drawLine(COLOR_WARNING.copy(alpha = 0.25f), Offset(w * 0.3f, h / 2f - 75f), Offset(w * 0.7f, h / 2f - 75f), 1f)
+
+                    // Final score panel
+                    drawRect(Color.White.copy(alpha = 0.03f), Offset(w * 0.2f, h / 2f - 55f), Size(w * 0.6f, 115f))
+
+                    drawText(nativeCanvas, "FINAL SCORE", w / 2f, h / 2f - 30f, 16f, Color(0xFF888888))
+                    drawText(nativeCanvas, "${state.totalScore}", w / 2f, h / 2f + 10f, 48f, COLOR_LOOT)
 
                     // Best score
                     val best = maxOf(state.bestScore, state.totalScore)
                     if (state.totalScore >= state.bestScore && state.bestScore > 0) {
-                        drawText(nativeCanvas, "NEW BEST!", w / 2f, h / 2f + 50f, 24f, COLOR_EXIT_OPEN)
+                        drawText(nativeCanvas, "★ NEW BEST! ★", w / 2f, h / 2f + 48f, 24f, COLOR_EXIT_OPEN)
                     } else if (best > 0) {
-                        drawText(nativeCanvas, "BEST: $best", w / 2f, h / 2f + 50f, 20f, Color(0xFF666666))
+                        drawText(nativeCanvas, "BEST: $best", w / 2f, h / 2f + 48f, 18f, Color(0xFF666666))
                     }
 
                     // Level reached
-                    drawText(nativeCanvas, "Level ${state.level} reached", w / 2f, h / 2f + 85f, 20f, COLOR_TEXT, alpha = 0.6f)
+                    drawText(nativeCanvas, "Level ${state.level} reached", w / 2f, h / 2f + 82f, 20f, COLOR_TEXT, alpha = 0.6f)
 
-                    drawText(nativeCanvas, "Tap to continue", w / 2f, h / 2f + 130f, 22f, COLOR_TEXT, alpha = 0.4f)
+                    // Prompt
+                    val tapAlpha = (sin(state.timeElapsed * 2f) * 0.2f + 0.5f).toFloat()
+                    drawText(nativeCanvas, "TAP TO CONTINUE", w / 2f, h / 2f + 130f, 20f, COLOR_TEXT, alpha = tapAlpha)
                 }
 
                 GamePhase.LEVEL_COMPLETE -> {
-                    drawRect(Color.Black.copy(alpha = 0.7f), Offset.Zero, size)
+                    drawRect(Color.Black.copy(alpha = 0.75f), Offset.Zero, size)
 
-                    drawText(nativeCanvas, "ESCAPED!", w / 2f, h / 2f - 120f, 52f, COLOR_EXIT_OPEN)
+                    // Victory glow
+                    drawCircle(COLOR_EXIT_OPEN.copy(alpha = 0.06f), 200f, Offset(w / 2f, h / 2f - 100f))
 
-                    // Score breakdown
+                    drawText(nativeCanvas, "ESCAPED!", w / 2f, h / 2f - 130f, 56f, COLOR_EXIT_OPEN)
+
+                    // Decorative line
+                    val escLineW = w * 0.35f
+                    drawLine(COLOR_EXIT_OPEN.copy(alpha = 0.3f), Offset(w / 2f - escLineW / 2, h / 2f - 105f), Offset(w / 2f + escLineW / 2, h / 2f - 105f), 1f)
+
+                    // Score breakdown panel
+                    val panelY = h / 2f - 80f
+                    val panelH = 200f
+                    drawRect(Color.White.copy(alpha = 0.03f), Offset(w * 0.12f, panelY), Size(w * 0.76f, panelH))
+
                     val baseScore = state.lootCollected * 100 * state.level
                     val timeBonus = ((state.backupTimer - state.timeElapsed).coerceAtLeast(0f) * 10).toInt()
                     val stealthBonus = if (state.neverSpotted) 500 else 0
                     val comboBonus = state.maxCombo * 200
 
-                    var lineY = h / 2f - 50f
-                    drawText(nativeCanvas, "Loot: $baseScore", w / 2f, lineY, 22f, COLOR_LOOT)
+                    var lineY = h / 2f - 55f
+
+                    // Gem icon + loot score
+                    val gemIconPath = Path().apply {
+                        val gx = w * 0.25f; val gy = lineY - 6f; val gs = 8f
+                        moveTo(gx, gy - gs); lineTo(gx + gs * 0.7f, gy); lineTo(gx, gy + gs); lineTo(gx - gs * 0.7f, gy); close()
+                    }
+                    drawPath(gemIconPath, COLOR_LOOT)
+                    drawText(nativeCanvas, "Loot", w * 0.32f, lineY, 20f, COLOR_LOOT, Paint.Align.LEFT)
+                    drawText(nativeCanvas, "+$baseScore", w * 0.75f, lineY, 20f, COLOR_LOOT, Paint.Align.RIGHT)
                     lineY += 30f
+
                     if (timeBonus > 0) {
-                        drawText(nativeCanvas, "Time bonus: +$timeBonus", w / 2f, lineY, 22f, COLOR_TEXT)
+                        drawText(nativeCanvas, "Time bonus", w * 0.32f, lineY, 20f, COLOR_TEXT, Paint.Align.LEFT, alpha = 0.7f)
+                        drawText(nativeCanvas, "+$timeBonus", w * 0.75f, lineY, 20f, COLOR_TEXT, Paint.Align.RIGHT, alpha = 0.7f)
                         lineY += 30f
                     }
                     if (stealthBonus > 0) {
-                        drawText(nativeCanvas, "STEALTH BONUS: +$stealthBonus", w / 2f, lineY, 22f, COLOR_PLAYER)
+                        drawText(nativeCanvas, "STEALTH", w * 0.32f, lineY, 20f, COLOR_PLAYER, Paint.Align.LEFT)
+                        drawText(nativeCanvas, "+$stealthBonus", w * 0.75f, lineY, 20f, COLOR_PLAYER, Paint.Align.RIGHT)
                         lineY += 30f
                     }
                     if (comboBonus > 0) {
-                        drawText(nativeCanvas, "Combo bonus: +$comboBonus", w / 2f, lineY, 22f, COLOR_COMBO)
+                        drawText(nativeCanvas, "Combo (x${state.maxCombo})", w * 0.32f, lineY, 20f, COLOR_COMBO, Paint.Align.LEFT)
+                        drawText(nativeCanvas, "+$comboBonus", w * 0.75f, lineY, 20f, COLOR_COMBO, Paint.Align.RIGHT)
                         lineY += 30f
                     }
 
-                    lineY += 10f
-                    drawText(nativeCanvas, "TOTAL: ${state.score}", w / 2f, lineY, 36f, COLOR_LOOT)
+                    // Divider line
+                    drawLine(Color.White.copy(alpha = 0.15f), Offset(w * 0.25f, lineY - 5f), Offset(w * 0.75f, lineY - 5f), 1f)
 
-                    if (state.maxCombo > 1) {
-                        lineY += 35f
-                        drawText(nativeCanvas, "Max Combo: x${state.maxCombo}", w / 2f, lineY, 20f, COLOR_COMBO, alpha = 0.7f)
-                    }
+                    lineY += 15f
+                    drawText(nativeCanvas, "TOTAL", w * 0.32f, lineY, 28f, COLOR_LOOT, Paint.Align.LEFT)
+                    drawText(nativeCanvas, "${state.score}", w * 0.75f, lineY, 32f, COLOR_LOOT, Paint.Align.RIGHT)
 
-                    drawText(nativeCanvas, "Tap for next level", w / 2f, h / 2f + 150f, 22f, COLOR_TEXT, alpha = 0.5f)
+                    // Next level prompt
+                    val nextAlpha = (sin(state.timeElapsed * 2.5f) * 0.2f + 0.6f).toFloat()
+                    drawText(nativeCanvas, "TAP FOR NEXT LEVEL  →", w / 2f, h / 2f + 160f, 20f, COLOR_EXIT_OPEN, alpha = nextAlpha)
                 }
                 else -> {}
             }

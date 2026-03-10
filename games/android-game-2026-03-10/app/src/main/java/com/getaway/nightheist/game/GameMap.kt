@@ -32,10 +32,19 @@ object MapGenerator {
         val exit = findFloorTile(tiles, w, h, w - 6, h - 6, w - 2, h - 2, rng)
         tiles[exit.y][exit.x] = TileType.EXIT
 
-        // Place loot
+        // Place loot — first gem guaranteed near spawn for immediate engagement
         val lootCount = 3 + level.coerceAtMost(5)
         val lootPositions = mutableListOf<GridPos>()
-        repeat(lootCount) {
+
+        // First gem: within 4 tiles of spawn (player sees it immediately)
+        val firstGem = findFloorNearby(tiles, w, h, spawn.x, spawn.y, radius = 4, rng, exclude = listOf(spawn, exit))
+        if (firstGem != null) {
+            tiles[firstGem.y][firstGem.x] = TileType.LOOT
+            lootPositions.add(firstGem)
+        }
+
+        // Remaining gems: spread across the map
+        repeat(lootCount - 1) {
             val loot = findRandomFloor(tiles, w, h, rng, exclude = lootPositions + listOf(spawn, exit))
             if (loot != null) {
                 tiles[loot.y][loot.x] = TileType.LOOT
@@ -166,6 +175,34 @@ object MapGenerator {
         // Absolute fallback
         tiles[2][2] = TileType.FLOOR
         return GridPos(2, 2)
+    }
+
+    private fun findFloorNearby(
+        tiles: Array<Array<TileType>>, w: Int, h: Int,
+        centerX: Int, centerY: Int, radius: Int, rng: Random,
+        exclude: List<GridPos> = emptyList()
+    ): GridPos? {
+        // Try random positions near center first
+        repeat(50) {
+            val x = (centerX + rng.nextInt(-radius, radius + 1)).coerceIn(1, w - 2)
+            val y = (centerY + rng.nextInt(-radius, radius + 1)).coerceIn(1, h - 2)
+            if (tiles[y][x] == TileType.FLOOR && GridPos(x, y) !in exclude) {
+                return GridPos(x, y)
+            }
+        }
+        // Fallback: spiral search from center
+        for (r in 1..radius + 2) {
+            for (dx in -r..r) {
+                for (dy in -r..r) {
+                    val x = (centerX + dx).coerceIn(1, w - 2)
+                    val y = (centerY + dy).coerceIn(1, h - 2)
+                    if (tiles[y][x] == TileType.FLOOR && GridPos(x, y) !in exclude) {
+                        return GridPos(x, y)
+                    }
+                }
+            }
+        }
+        return null
     }
 
     private fun findRandomFloor(
