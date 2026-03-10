@@ -1,5 +1,6 @@
 package com.getaway.nightheist.game
 
+import kotlin.math.atan2
 import kotlin.random.Random
 
 object MapGenerator {
