@@ -7,6 +7,15 @@ android {
     namespace = "com.getaway.nightheist"
     compileSdk = 34
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("../keystore/release-keystore.jks")
+            storePassword = "changeit123!"
+            keyAlias = "release"
+            keyPassword = "changeit123!"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.getaway.nightheist"
         minSdk = 24
@@ -17,6 +26,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
