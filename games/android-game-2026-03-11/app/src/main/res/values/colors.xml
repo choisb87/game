@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sky_top">#FF0B0E2D</color>
+    <color name="sky_bottom">#FF1A1A4E</color>
+    <color name="block_perfect">#FFFFD700</color>
+    <color name="ui_text">#FFFFFFFF</color>
+    <color name="ui_accent">#FFFF6B35</color>
+</resources>

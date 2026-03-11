@@ -1,0 +1,5 @@
+# Android SDK 경로를 설정하세요
+# sdk.dir=/path/to/your/Android/Sdk
+# 예시:
+# sdk.dir=/home/user/Android/Sdk
+# sdk.dir=C:\\Users\\user\\AppData\\Local\\Android\\Sdk

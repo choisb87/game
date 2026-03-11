@@ -1,0 +1,20 @@
+{
+  "title": "Sky Stacker",
+  "title_ko": "스카이 스태커",
+  "genre": "Arcade / Casual",
+  "core_loop": "tap-to-stack timing blocks, survive progressive speed increase, chain PERFECT combos for bonus points",
+  "session_length": "30s - 2min",
+  "target_audience": "all ages, casual gamers",
+  "monetization": "premium paid ($1.99)",
+  "platform": "Android",
+  "min_sdk": 24,
+  "tech_stack": "Kotlin, Jetpack Compose Canvas",
+  "key_features": [
+    "one-tap gameplay",
+    "PERFECT combo system with golden particles",
+    "progressive difficulty curve",
+    "night sky aesthetic with twinkling stars",
+    "instant restart loop",
+    "no ads, no IAP"
+  ]
+}
