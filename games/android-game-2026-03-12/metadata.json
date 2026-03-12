@@ -1,0 +1,19 @@
+{
+  "title": "Void Runner: 중력의 끝",
+  "genre": "Gravity-Flip Auto Runner / Arcade",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "자동 스크롤되는 복도에서 탭으로 중력을 반전시키며 장애물을 피하고 크리스탈을 수집. 속도가 점진적으로 증가하며 존(Zone)이 올라갈수록 새로운 장애물 유형이 등장. 콤보 시스템으로 연속 수집 시 점수 배율 상승.",
+  "session_length": "30초~3분 (런당)",
+  "target_audience": "아케이드 게이머, 원터치 고스코어 챌린지를 즐기는 캐주얼~미드코어 유저",
+  "monetization": "프리미엄 유료 ($2.99), 광고 없음, IAP 없음",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.voidrunner.gravity",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}

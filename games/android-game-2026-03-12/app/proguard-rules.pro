@@ -1,0 +1,2 @@
+-keepclassmembers class com.voidrunner.gravity.game.** { *; }
+-keep class androidx.compose.** { *; }

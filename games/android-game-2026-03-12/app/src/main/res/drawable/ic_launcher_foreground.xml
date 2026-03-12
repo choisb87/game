@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background glow -->
+    <path
+        android:fillColor="#1A00E5FF"
+        android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0" />
+
+    <!-- Arrow/diamond shape - player icon -->
+    <path
+        android:fillColor="#FF00E5FF"
+        android:pathData="M54,24L74,54L54,84L34,54Z" />
+
+    <!-- Inner glow -->
+    <path
+        android:fillColor="#FF80F0FF"
+        android:pathData="M54,34L64,54L54,74L44,54Z" />
+
+    <!-- Speed lines -->
+    <path
+        android:strokeColor="#8000E5FF"
+        android:strokeWidth="2"
+        android:pathData="M20,44L35,44" />
+    <path
+        android:strokeColor="#8000E5FF"
+        android:strokeWidth="2"
+        android:pathData="M15,54L30,54" />
+    <path
+        android:strokeColor="#8000E5FF"
+        android:strokeWidth="2"
+        android:pathData="M20,64L35,64" />
+</vector>

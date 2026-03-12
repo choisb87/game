@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.voidrunner.gravity.app-merged_res-39:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.voidrunner.gravity.app-main-41:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.voidrunner.gravity.app-merged_res-39:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.voidrunner.gravity.app-main-41:/mipmap-anydpi-v26/ic_launcher.xml"
+    }
+]

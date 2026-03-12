@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="neon_cyan">#FF00E5FF</color>
+    <color name="neon_magenta">#FFFF006E</color>
+    <color name="neon_gold">#FFFFD700</color>
+    <color name="danger_red">#FFFF3333</color>
+    <color name="void_dark">#FF050510</color>
+    <color name="void_blue">#FF0A0A2E</color>
+</resources>

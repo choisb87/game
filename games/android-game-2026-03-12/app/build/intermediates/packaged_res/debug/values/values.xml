@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="danger_red">#FFFF3333</color>
+    <color name="neon_cyan">#FF00E5FF</color>
+    <color name="neon_gold">#FFFFD700</color>
+    <color name="neon_magenta">#FFFF006E</color>
+    <color name="void_blue">#FF0A0A2E</color>
+    <color name="void_dark">#FF050510</color>
+    <string name="app_name">Void Runner</string>
+    <style name="Theme.VoidRunner" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:navigationBarColor">#FF050510</item>
+        <item name="android:statusBarColor">#FF050510</item>
+    </style>
+</resources>

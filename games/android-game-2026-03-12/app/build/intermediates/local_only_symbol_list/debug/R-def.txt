@@ -1,0 +1,12 @@
+R_DEF: Internal format may change without notice
+local
+color danger_red
+color neon_cyan
+color neon_gold
+color neon_magenta
+color void_blue
+color void_dark
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+style Theme.VoidRunner
