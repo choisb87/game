@@ -1,0 +1,2 @@
+-keepclassmembers class com.flamedash.runner.game.** { *; }
+-keep class androidx.compose.** { *; }

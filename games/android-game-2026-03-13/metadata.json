@@ -1,0 +1,19 @@
+{
+  "title": "Flame Dash: 불꽃 질주",
+  "genre": "Arcade / Endless Climber",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "좌/우 탭으로 대시하며 플랫폼을 밟고 올라가고, 올라오는 화염을 피해 최대한 높이 도달",
+  "session_length": "30s~3min",
+  "target_audience": "캐주얼 아케이드 게이머, 하이스코어 경쟁 선호 유저",
+  "monetization": "Premium paid ($2.99), no ads, no IAP",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.flamedash.runner",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}

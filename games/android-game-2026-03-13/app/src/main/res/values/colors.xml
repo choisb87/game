@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="flame_orange">#FFFF6B35</color>
+    <color name="flame_red">#FFFF1744</color>
+    <color name="flame_yellow">#FFFFD740</color>
+    <color name="ember_glow">#FFFF9100</color>
+    <color name="ash_dark">#FF1A1A2E</color>
+    <color name="ice_blue">#FF00E5FF</color>
+    <color name="gem_green">#FF00E676</color>
+    <color name="gem_purple">#FFD500F9</color>
+    <color name="sky_night">#FF0D1B2A</color>
+</resources>
