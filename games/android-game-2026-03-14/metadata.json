@@ -1,0 +1,19 @@
+{
+  "title": "Orbit Shield: 궤도 방패",
+  "genre": "Arcade / Circular Defense",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "탭으로 방패 회전 방향을 전환하며 사방에서 날아오는 소행성을 튕겨내고 행성을 방어",
+  "session_length": "30s~3min",
+  "target_audience": "캐주얼 아케이드 게이머, 반사신경 기반 하이스코어 도전 선호 유저",
+  "monetization": "Premium paid ($2.99), no ads, no IAP",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.orbitshield.game",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}

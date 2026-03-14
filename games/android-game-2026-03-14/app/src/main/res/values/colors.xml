@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="space_black">#FF0A0E1A</color>
+    <color name="nebula_deep">#FF0D1B3E</color>
+    <color name="shield_cyan">#FF00E5FF</color>
+    <color name="shield_blue">#FF2979FF</color>
+    <color name="planet_core">#FF6200EA</color>
+    <color name="planet_glow">#FFB388FF</color>
+    <color name="asteroid_red">#FFFF1744</color>
+    <color name="asteroid_orange">#FFFF6D00</color>
+    <color name="star_white">#FFFFFFFF</color>
+    <color name="score_gold">#FFFFD740</color>
+    <color name="heal_green">#FF00E676</color>
+</resources>
