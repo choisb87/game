@@ -1,0 +1,19 @@
+{
+  "title": "Chain Reactor",
+  "genre": "Puzzle Arcade",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "제한된 스파크로 오브를 터뜨려 최대 연쇄 폭발을 일으키는 전략적 퍼즐 아케이드",
+  "session_length": "30s~3min",
+  "target_audience": "캐주얼 퍼즐 게이머, 전략적 사고를 즐기는 10~40대",
+  "monetization": "Premium paid ($2.99), no ads, no IAP",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.chainreactor.game",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}

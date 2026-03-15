@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="deep_space">#FF050A18</color>
+    <color name="space_blue">#FF0B1535</color>
+    <color name="orb_cyan">#FF00E5FF</color>
+    <color name="orb_magenta">#FFFF00E5</color>
+    <color name="orb_orange">#FFFF6D00</color>
+    <color name="orb_green">#FF00E676</color>
+    <color name="orb_gold">#FFFFD740</color>
+    <color name="orb_red">#FFFF1744</color>
+    <color name="explosion_core">#FFFFFFFF</color>
+    <color name="explosion_ring">#FFFFAB40</color>
+    <color name="mega_purple">#FFD500F9</color>
+    <color name="splitter_blue">#FF2979FF</color>
+    <color name="star_white">#FFFFFFFF</color>
+    <color name="score_gold">#FFFFD740</color>
+    <color name="spark_indicator">#FFFF9100</color>
+    <color name="ui_text">#FFFFFFFF</color>
+</resources>
