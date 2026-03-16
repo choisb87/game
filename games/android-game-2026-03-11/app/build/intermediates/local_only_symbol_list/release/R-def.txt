@@ -1,0 +1,11 @@
+R_DEF: Internal format may change without notice
+local
+color block_perfect
+color sky_bottom
+color sky_top
+color ui_accent
+color ui_text
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+style Theme.SkyStacker

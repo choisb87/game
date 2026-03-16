@@ -1,0 +1,18 @@
+R_DEF: Internal format may change without notice
+local
+color asteroid_orange
+color asteroid_red
+color heal_green
+color nebula_deep
+color planet_core
+color planet_glow
+color score_gold
+color shield_blue
+color shield_cyan
+color space_black
+color star_white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+style Theme.OrbitShield

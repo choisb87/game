@@ -1,0 +1,18 @@
+<lint-module
+    format="1"
+    dir="/home/sb/game/games/android-game-2026-03-14/app"
+    name=":app"
+    type="APP"
+    maven="OrbitShield:app:"
+    agpVersion="8.2.2"
+    buildFolder="build"
+    bootClassPath="/home/sb/.local/android-sdk/platforms/android-34/android.jar:/home/sb/.local/android-sdk/build-tools/34.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-34">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>
