@@ -1,0 +1,154 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/background_layer.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/board_view.gd" id="3"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2")
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 52
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 24
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TopPanel" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 160)
+
+[node name="TopContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent"]
+layout_mode = 2
+text = "Glass Garden"
+
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent"]
+layout_mode = 2
+text = "빛의 경로를 정렬해 잠든 꽃을 깨우세요."
+autowrap_mode = 3
+
+[node name="StatsRow" type="HBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LevelLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LEVEL 1"
+
+[node name="MoveLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+text = "남은 회전 0"
+
+[node name="StatusLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+text = "개화 0/0"
+
+[node name="Center" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BoardView" type="Control" parent="SafeArea/Layout/Center"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_minimum_size = Vector2(720, 720)
+script = ExtResource("3")
+
+[node name="CompletionCard" type="PanelContainer" parent="SafeArea/Layout/Center"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -90.0
+offset_right = 230.0
+offset_bottom = 90.0
+
+[node name="CompletionContent" type="VBoxContainer" parent="SafeArea/Layout/Center/CompletionCard"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CompletionTitle" type="Label" parent="SafeArea/Layout/Center/CompletionCard/CompletionContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "온실 복원"
+
+[node name="CompletionText" type="Label" parent="SafeArea/Layout/Center/CompletionCard/CompletionContent"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "빛이 다시 흐릅니다."
+
+[node name="BottomPanel" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 132)
+
+[node name="BottomContent" type="VBoxContainer" parent="SafeArea/Layout/BottomPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HintLabel" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+layout_mode = 2
+autowrap_mode = 3
+text = "거울 타일을 탭해서 90도 회전시키세요."
+
+[node name="Buttons" type="HBoxContainer" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="RestartButton" type="Button" parent="SafeArea/Layout/BottomPanel/BottomContent/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "다시 정렬"
+
+[node name="NextButton" type="Button" parent="SafeArea/Layout/BottomPanel/BottomContent/Buttons"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "다음 구획"
+

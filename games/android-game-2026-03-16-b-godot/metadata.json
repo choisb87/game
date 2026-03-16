@@ -1,0 +1,23 @@
+{
+  "title": "Glass Garden",
+  "title_ko": "글래스 가든",
+  "genre": "Premium Light-Routing Puzzle",
+  "platform": "Android (Godot 4)",
+  "engine": "Godot 4.x",
+  "orientation": "Portrait",
+  "core_loop": "Rotate glass mirrors to route light beams through all flower buds within a limited number of moves.",
+  "session_length": "1-3 minutes per level",
+  "target_audience": "Premium mobile puzzle players who prefer calm, polished tactile experiences",
+  "monetization": "premium_paid",
+  "price": "$2.99",
+  "package_name": "com.glassgarden.game",
+  "version": "1.0.0",
+  "created_date": "2026-03-16",
+  "key_features": [
+    "5 handcrafted levels",
+    "one-hand tap controls",
+    "glasshouse visual theme",
+    "mobile-first portrait UI",
+    "no ads, no IAP"
+  ]
+}

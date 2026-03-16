@@ -1,0 +1,8 @@
+<svg width="320" height="120" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="4" y="4" width="312" height="112" rx="28" fill="#12211F" stroke="#DDE8DA" stroke-opacity="0.22" stroke-width="2"/>
+  <path d="M42 76L84 34L112 62L148 26" stroke="#F5D38E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="84" cy="34" r="9" fill="#F6E9C5"/>
+  <circle cx="148" cy="26" r="11" fill="#F1F6D8"/>
+  <text x="176" y="52" fill="#F2EACC" font-size="30" font-family="Georgia, 'Times New Roman', serif">Glass Garden</text>
+  <text x="176" y="78" fill="#9EB2A8" font-size="14" font-family="Georgia, 'Times New Roman', serif">premium light-routing puzzle</text>
+</svg>
