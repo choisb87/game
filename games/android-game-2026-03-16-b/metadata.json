@@ -1,0 +1,44 @@
+{
+  "title": "Velvet Lift",
+  "title_ko": "벨벳 리프트",
+  "tagline": "Boutique concierge strategy inside an after-hours luxury hotel.",
+  "genre": "Strategy / Concierge Simulation",
+  "subgenre": "Queue Planning / Premium Session Strategy",
+  "platform": "Android",
+  "language": "Kotlin",
+  "framework": "Jetpack Compose",
+  "package_name": "com.velvetlift.game",
+  "orientation": "portrait",
+  "monetization": "premium_paid",
+  "recommended_price_usd": 3.99,
+  "session_length": "2-3 minutes per contract",
+  "campaign_size": 6,
+  "core_loop": "Queue elevator stops, pick up guests, protect house mood, and hit each contract revenue target before the timer runs out.",
+  "primary_controls": [
+    "tap floor to add stop",
+    "tap queued floor again to remove",
+    "tap Lobby to exit run"
+  ],
+  "guest_types": [
+    "Suite Guest",
+    "Patron",
+    "Courier",
+    "Critic",
+    "Salon"
+  ],
+  "progression": [
+    "6 contract campaign",
+    "persistent unlock progression",
+    "permanent concierge amenities"
+  ],
+  "key_features": [
+    "Art-deco hotel presentation",
+    "Queue-based elevator strategy",
+    "VIP private ride scoring",
+    "Courier time extension bonuses",
+    "Critic-driven mood risk",
+    "SharedPreferences progression save"
+  ],
+  "created_date": "2026-03-16",
+  "updated_date": "2026-03-16"
+}

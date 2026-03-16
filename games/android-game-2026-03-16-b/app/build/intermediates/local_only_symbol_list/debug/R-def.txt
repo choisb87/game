@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+color velvet_background
+color velvet_blush
+color velvet_coral
+color velvet_gold
+color velvet_ink
+color velvet_rail
+color velvet_surface
+color velvet_teal
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Theme.VelvetLift

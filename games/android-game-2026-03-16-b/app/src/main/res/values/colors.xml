@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="velvet_background">#0B1418</color>
+    <color name="velvet_surface">#122128</color>
+    <color name="velvet_rail">#1C3138</color>
+    <color name="velvet_gold">#D8B16B</color>
+    <color name="velvet_teal">#63C6C1</color>
+    <color name="velvet_coral">#EF8B6B</color>
+    <color name="velvet_blush">#C4788A</color>
+    <color name="velvet_ink">#060B0E</color>
+</resources>

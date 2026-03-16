@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.VelvetLift" parent="android:Theme.Material.NoActionBar">
+        <item name="android:navigationBarColor">@color/velvet_background</item>
+        <item name="android:statusBarColor">@color/velvet_background</item>
+        <item name="android:windowBackground">@color/velvet_background</item>
+    </style>
+</resources>
