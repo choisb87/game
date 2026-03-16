@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="deep_space">#FF0A1628</color>
+    <color name="nebula_purple">#FF6B3FA0</color>
+    <color name="space_black">#FF030812</color>
+    <color name="star_gold">#FFFFD740</color>
+    <color name="target_blue">#FF448AFF</color>
+    <color name="target_green">#FF00E676</color>
+    <color name="target_orange">#FFFF9100</color>
+    <color name="target_pink">#FFFF80AB</color>
+    <color name="ui_dim">#88FFFFFF</color>
+    <color name="ui_white">#FFFFFFFF</color>
+    <color name="well_cyan">#FF00E5FF</color>
+    <color name="well_repel">#FFFF4081</color>
+    <string name="app_name">Gravity Well</string>
+    <string name="best_score">최고 점수</string>
+    <string name="combo">콤보</string>
+    <string name="game_over">게임 종료</string>
+    <string name="how_to_play">게임 방법</string>
+    <string name="level">레벨</string>
+    <string name="menu">메뉴</string>
+    <string name="next_level">다음 레벨</string>
+    <string name="perfect">퍼펙트!</string>
+    <string name="play">플레이</string>
+    <string name="score">점수</string>
+    <string name="stars_caught">포획한 별</string>
+    <string name="try_again">다시 하기</string>
+    <string name="wells_remaining">남은 우물</string>
+    <style name="Theme.GravityWell" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:navigationBarColor">#FF030812</item>
+        <item name="android:statusBarColor">#FF030812</item>
+    </style>
+</resources>

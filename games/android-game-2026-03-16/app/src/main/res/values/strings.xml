@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gravity Well</string>
+    <string name="play">플레이</string>
+    <string name="how_to_play">게임 방법</string>
+    <string name="best_score">최고 점수</string>
+    <string name="score">점수</string>
+    <string name="level">레벨</string>
+    <string name="wells_remaining">남은 우물</string>
+    <string name="stars_caught">포획한 별</string>
+    <string name="game_over">게임 종료</string>
+    <string name="try_again">다시 하기</string>
+    <string name="menu">메뉴</string>
+    <string name="next_level">다음 레벨</string>
+    <string name="perfect">퍼펙트!</string>
+    <string name="combo">콤보</string>
+</resources>

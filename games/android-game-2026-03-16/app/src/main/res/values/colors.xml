@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="space_black">#FF030812</color>
+    <color name="deep_space">#FF0A1628</color>
+    <color name="nebula_purple">#FF6B3FA0</color>
+    <color name="star_gold">#FFFFD740</color>
+    <color name="well_cyan">#FF00E5FF</color>
+    <color name="well_repel">#FFFF4081</color>
+    <color name="target_green">#FF00E676</color>
+    <color name="target_blue">#FF448AFF</color>
+    <color name="target_orange">#FFFF9100</color>
+    <color name="target_pink">#FFFF80AB</color>
+    <color name="ui_white">#FFFFFFFF</color>
+    <color name="ui_dim">#88FFFFFF</color>
+</resources>

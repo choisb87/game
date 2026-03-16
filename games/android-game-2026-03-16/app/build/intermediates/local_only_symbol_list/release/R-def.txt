@@ -1,0 +1,32 @@
+R_DEF: Internal format may change without notice
+local
+color deep_space
+color nebula_purple
+color space_black
+color star_gold
+color target_blue
+color target_green
+color target_orange
+color target_pink
+color ui_dim
+color ui_white
+color well_cyan
+color well_repel
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+string best_score
+string combo
+string game_over
+string how_to_play
+string level
+string menu
+string next_level
+string perfect
+string play
+string score
+string stars_caught
+string try_again
+string wells_remaining
+style Theme.GravityWell

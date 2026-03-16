@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.gravitywell.game.app-merged_res-39:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.gravitywell.game.app-main-40:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.gravitywell.game.app-merged_res-39:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.gravitywell.game.app-main-40:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.gravitywell.game.app-merged_res-39:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.gravitywell.game.app-main-40:/drawable/ic_launcher_background.xml"
+    }
+]

@@ -1,0 +1,26 @@
+{
+  "title": "Gravity Well",
+  "title_ko": "중력의 우물",
+  "genre": "Physics Puzzle Arcade",
+  "core_loop": "Place gravity wells (attract/repel) to guide falling stars into color-matched target zones. Combo streaks for score multipliers.",
+  "session_length": "30s-3min per level",
+  "monetization": "premium_paid",
+  "price": "$2.99",
+  "target_audience": "Casual puzzle fans, physics game enthusiasts",
+  "platform": "Android",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "language": "Kotlin",
+  "framework": "Jetpack Compose",
+  "rendering": "Compose Canvas API",
+  "version": "1.0.0",
+  "star_types": ["gold", "silver", "ruby", "diamond"],
+  "mechanics": ["gravity_wells", "attract_repel_toggle", "color_matching", "combo_system", "slow_motion", "screen_shake"],
+  "key_features": [
+    "Dual gravity mode (attract/repel)",
+    "4 star types with unique physics",
+    "Combo-driven scoring with slow-motion reward",
+    "Procedural Canvas rendering",
+    "Infinite level progression"
+  ]
+}

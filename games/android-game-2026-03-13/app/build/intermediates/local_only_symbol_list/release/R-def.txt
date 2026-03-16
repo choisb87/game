@@ -1,0 +1,15 @@
+R_DEF: Internal format may change without notice
+local
+color ash_dark
+color ember_glow
+color flame_orange
+color flame_red
+color flame_yellow
+color gem_green
+color gem_purple
+color ice_blue
+color sky_night
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+style Theme.FlameDash

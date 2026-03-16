@@ -1,0 +1,23 @@
+R_DEF: Internal format may change without notice
+local
+color deep_space
+color explosion_core
+color explosion_ring
+color mega_purple
+color orb_cyan
+color orb_gold
+color orb_green
+color orb_magenta
+color orb_orange
+color orb_red
+color score_gold
+color space_blue
+color spark_indicator
+color splitter_blue
+color star_white
+color ui_text
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+string app_name
+style Theme.ChainReactor
