@@ -379,14 +379,14 @@ func _ensure_styles() -> void:
 
 
 func _board_rect() -> Rect2:
-	var side := min(size.x, size.y) - board_padding * 2.0
+	var side: float = min(size.x, size.y) - board_padding * 2.0
 	side = max(side, 120.0)
 	return Rect2(Vector2((size.x - side) * 0.5, (size.y - side) * 0.5), Vector2(side, side))
 
 
 func _cell_rect(board_rect: Rect2, cell: Vector2i) -> Rect2:
 	var cell_size := board_rect.size.x / float(grid_size)
-	var gap := max(4.0, cell_size * 0.08)
+	var gap: float = max(4.0, cell_size * 0.08)
 	return Rect2(
 		board_rect.position + Vector2(cell.x, cell.y) * cell_size + Vector2(gap, gap),
 		Vector2(cell_size - gap * 2.0, cell_size - gap * 2.0)

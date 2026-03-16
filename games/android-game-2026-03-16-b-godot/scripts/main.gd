@@ -43,7 +43,7 @@ func _ready() -> void:
 
 func _load_level(index: int) -> void:
 	current_level_index = clampi(index, 0, levels.size() - 1)
-	var level := levels[current_level_index]
+	var level: Dictionary = levels[current_level_index] as Dictionary
 
 	completion_card.visible = false
 	next_button.visible = false
