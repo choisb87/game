@@ -314,17 +314,20 @@ func _draw_piece(cell_rect: Rect2, piece: Dictionary) -> void:
 
 	var line_color := Color("f4d08f")
 	var glow_color := Color(0.96, 0.88, 0.68, 0.24)
-	var inset := cell_rect.size.x * 0.18
-	var from_point := cell_rect.position + Vector2(inset, inset)
-	var to_point := cell_rect.position + Vector2(cell_rect.size.x - inset, cell_rect.size.y - inset)
-	if int(piece.get("rotation", 0)) % 2 == 1:
-		from_point = cell_rect.position + Vector2(cell_rect.size.x - inset, inset)
-		to_point = cell_rect.position + Vector2(inset, cell_rect.size.y - inset)
+	var center := cell_rect.get_center()
+	var reach := cell_rect.size.x * 0.28
+	var rotation := wrapi(int(piece.get("rotation", 0)), 0, 4)
+	var dir_a := Vector2.RIGHT.rotated(rotation * PI * 0.5)
+	var dir_b := Vector2.RIGHT.rotated((rotation + 1) * PI * 0.5)
+	var point_a := center + dir_a * reach
+	var point_b := center + dir_b * reach
 
-	draw_line(from_point, to_point, glow_color, 16.0, true)
-	draw_line(from_point, to_point, line_color, 7.0, true)
-	draw_circle(cell_rect.get_center(), cell_rect.size.x * 0.085, Color("0f1716"))
-	draw_circle(cell_rect.get_center(), cell_rect.size.x * 0.052, line_color)
+	draw_line(center, point_a, glow_color, 16.0, true)
+	draw_line(center, point_b, glow_color, 16.0, true)
+	draw_line(center, point_a, line_color, 7.0, true)
+	draw_line(center, point_b, line_color, 7.0, true)
+	draw_circle(center, cell_rect.size.x * 0.085, Color("0f1716"))
+	draw_circle(center, cell_rect.size.x * 0.052, line_color)
 
 	if bool(piece.get("locked", false)):
 		var lock_center := (
@@ -546,20 +549,26 @@ func _direction_from_side(side: String) -> Vector2i:
 
 
 func _reflect(direction: Vector2i, rotation: int) -> Vector2i:
-	var backslash_map := {
-		Vector2i.UP: Vector2i.LEFT,
-		Vector2i.RIGHT: Vector2i.DOWN,
-		Vector2i.DOWN: Vector2i.RIGHT,
-		Vector2i.LEFT: Vector2i.UP
+	var lookup_map := {
+		0: {
+			Vector2i.LEFT: Vector2i.UP,
+			Vector2i.DOWN: Vector2i.RIGHT
+		},
+		1: {
+			Vector2i.UP: Vector2i.RIGHT,
+			Vector2i.LEFT: Vector2i.DOWN
+		},
+		2: {
+			Vector2i.RIGHT: Vector2i.DOWN,
+			Vector2i.UP: Vector2i.LEFT
+		},
+		3: {
+			Vector2i.RIGHT: Vector2i.UP,
+			Vector2i.DOWN: Vector2i.LEFT
+		}
 	}
-	var slash_map := {
-		Vector2i.UP: Vector2i.RIGHT,
-		Vector2i.RIGHT: Vector2i.UP,
-		Vector2i.DOWN: Vector2i.LEFT,
-		Vector2i.LEFT: Vector2i.DOWN
-	}
-	var lookup := backslash_map if wrapi(rotation, 0, 4) % 2 == 0 else slash_map
-	return lookup.get(direction, Vector2i.DOWN)
+	var lookup := lookup_map.get(wrapi(rotation, 0, 4), {})
+	return lookup.get(direction, direction)
 
 
 func _is_inside(cell: Vector2i) -> bool:
