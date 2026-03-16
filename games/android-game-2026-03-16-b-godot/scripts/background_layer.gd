@@ -46,4 +46,3 @@ func _draw() -> void:
 		var wobble := sin(pulse * 0.75 + seed) * 8.0
 		var center := Vector2(x * size.x, y * size.y + wobble)
 		draw_circle(center, radius + sin(pulse + seed) * 4.0, Color(tint.r, tint.g, tint.b, alpha))
-

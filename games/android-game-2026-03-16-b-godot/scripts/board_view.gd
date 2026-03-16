@@ -4,6 +4,7 @@ signal turns_changed(turns_left)
 signal blooms_changed(lit_count, total_count)
 signal level_completed
 signal level_failed
+signal interaction_feedback(message, emphasized)
 
 const BEAM_FALLBACK := Color("ffe08a")
 const INVALID_CELL := Vector2i(-1, -1)
@@ -12,6 +13,7 @@ var grid_size := 4
 var max_moves := 0
 var turns_used := 0
 var board_padding := 24.0
+var input_enabled := false
 
 var pieces := {}
 var blooms := []
@@ -23,6 +25,10 @@ var lit_bloom_lookup := {}
 
 var completed := false
 var failed := false
+var pulse_cell := INVALID_CELL
+var pulse_color := Color(0.0, 0.0, 0.0, 0.0)
+var pulse_time_left := 0.0
+var win_flash_time := 0.0
 
 var board_style: StyleBoxFlat
 var cell_style: StyleBoxFlat
@@ -32,10 +38,32 @@ var blocker_style: StyleBoxFlat
 
 func _ready() -> void:
 	mouse_filter = MOUSE_FILTER_STOP
+	set_process(true)
+
+
+func _process(delta: float) -> void:
+	var needs_redraw := false
+
+	if pulse_time_left > 0.0:
+		pulse_time_left = max(0.0, pulse_time_left - delta)
+		if pulse_time_left == 0.0:
+			pulse_cell = INVALID_CELL
+		needs_redraw = true
+
+	if win_flash_time > 0.0:
+		win_flash_time = max(0.0, win_flash_time - delta)
+		needs_redraw = true
+
+	if needs_redraw:
+		queue_redraw()
 
 
 func get_turns_left() -> int:
 	return max(0, max_moves - turns_used)
+
+
+func set_input_enabled(enabled: bool) -> void:
+	input_enabled = enabled
 
 
 func setup_level(level: Dictionary) -> void:
@@ -44,6 +72,8 @@ func setup_level(level: Dictionary) -> void:
 	turns_used = 0
 	completed = false
 	failed = false
+	pulse_cell = INVALID_CELL
+	pulse_time_left = 0.0
 
 	pieces.clear()
 	blooms.clear()
@@ -78,7 +108,7 @@ func setup_level(level: Dictionary) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
-	if completed or failed:
+	if not input_enabled or completed or failed:
 		return
 
 	var pointer_pos := Vector2.ZERO
@@ -100,14 +130,29 @@ func _gui_input(event: InputEvent) -> void:
 
 	var cell := _cell_from_local(pointer_pos)
 	if cell == INVALID_CELL:
+		interaction_feedback.emit("보드 안의 거울을 탭하세요.", false)
+		accept_event()
 		return
 
 	var key := _cell_key(cell)
 	if not pieces.has(key):
+		interaction_feedback.emit("빈 칸입니다. 거울 타일이 있는 칸만 회전합니다.", false)
+		_pulse(cell, Color(0.69, 0.79, 0.74, 0.55))
+		accept_event()
 		return
 
 	var piece := pieces[key] as Dictionary
-	if String(piece.get("type", "")) != "mirror" or bool(piece.get("locked", false)):
+	var piece_type := String(piece.get("type", ""))
+	if piece_type == "blocker":
+		interaction_feedback.emit("차단 유리는 고정되어 있어 빛을 흡수합니다.", true)
+		_pulse(cell, Color(0.97, 0.57, 0.49, 0.60))
+		accept_event()
+		return
+
+	if bool(piece.get("locked", false)):
+		interaction_feedback.emit("잠긴 거울은 회전할 수 없습니다.", true)
+		_pulse(cell, Color(0.97, 0.57, 0.49, 0.60))
+		accept_event()
 		return
 
 	piece["rotation"] = wrapi(int(piece.get("rotation", 0)) + 1, 0, 4)
@@ -116,12 +161,17 @@ func _gui_input(event: InputEvent) -> void:
 	_recalculate()
 	turns_changed.emit(get_turns_left())
 	blooms_changed.emit(lit_bloom_lookup.size(), blooms.size())
+	interaction_feedback.emit("거울을 회전했습니다. 빛의 새 경로를 확인하세요.", false)
+	_pulse(cell, Color(0.98, 0.86, 0.55, 0.60))
 
 	if lit_bloom_lookup.size() == blooms.size():
 		completed = true
+		win_flash_time = 0.55
+		interaction_feedback.emit("모든 꽃이 개화했습니다.", true)
 		level_completed.emit()
 	elif turns_used >= max_moves:
 		failed = true
+		interaction_feedback.emit("회전 기회를 모두 사용했습니다.", true)
 		level_failed.emit()
 
 	accept_event()
@@ -146,8 +196,12 @@ func _draw() -> void:
 		var from_point := _grid_to_local(segment["from"] as Vector2, board_rect)
 		var to_point := _grid_to_local(segment["to"] as Vector2, board_rect)
 		var beam_color := segment["color"] as Color
-		draw_line(from_point, to_point, Color(beam_color.r, beam_color.g, beam_color.b, 0.18), 20.0, true)
-		draw_line(from_point, to_point, Color(beam_color.r, beam_color.g, beam_color.b, 0.85), 8.0, true)
+		draw_line(
+			from_point, to_point, Color(beam_color.r, beam_color.g, beam_color.b, 0.18), 20.0, true
+		)
+		draw_line(
+			from_point, to_point, Color(beam_color.r, beam_color.g, beam_color.b, 0.85), 8.0, true
+		)
 		draw_line(from_point, to_point, Color(1.0, 1.0, 1.0, 0.95), 2.0, true)
 
 	for y in range(grid_size):
@@ -164,6 +218,8 @@ func _draw() -> void:
 
 	_draw_sources(board_rect)
 	_draw_board_frame(board_rect)
+	_draw_pulse(board_rect)
+	_draw_win_flash(board_rect)
 
 
 func _recalculate() -> void:
@@ -233,21 +289,25 @@ func _trace_source(source: Dictionary) -> Dictionary:
 		var outside := travel_point + Vector2(direction.x, direction.y) * 0.18
 		segments.append({"from": travel_point, "to": outside, "color": beam_color})
 
-	return {
-		"segments": segments,
-		"path": path_cells,
-		"blooms": lit_blooms
-	}
+	return {"segments": segments, "path": path_cells, "blooms": lit_blooms}
 
 
 func _draw_piece(cell_rect: Rect2, piece: Dictionary) -> void:
 	var piece_type := String(piece.get("type", ""))
 	if piece_type == "blocker":
 		draw_style_box(blocker_style, cell_rect.grow(-cell_rect.size.x * 0.14))
-		var top_left := cell_rect.position + Vector2(cell_rect.size.x * 0.26, cell_rect.size.y * 0.34)
-		var top_right := cell_rect.position + Vector2(cell_rect.size.x * 0.74, cell_rect.size.y * 0.34)
-		var bottom_left := cell_rect.position + Vector2(cell_rect.size.x * 0.30, cell_rect.size.y * 0.66)
-		var bottom_right := cell_rect.position + Vector2(cell_rect.size.x * 0.70, cell_rect.size.y * 0.66)
+		var top_left := (
+			cell_rect.position + Vector2(cell_rect.size.x * 0.26, cell_rect.size.y * 0.34)
+		)
+		var top_right := (
+			cell_rect.position + Vector2(cell_rect.size.x * 0.74, cell_rect.size.y * 0.34)
+		)
+		var bottom_left := (
+			cell_rect.position + Vector2(cell_rect.size.x * 0.30, cell_rect.size.y * 0.66)
+		)
+		var bottom_right := (
+			cell_rect.position + Vector2(cell_rect.size.x * 0.70, cell_rect.size.y * 0.66)
+		)
 		draw_line(top_left, top_right, Color(0.74, 0.84, 0.82, 0.55), 3.0, true)
 		draw_line(bottom_left, bottom_right, Color(0.74, 0.84, 0.82, 0.35), 2.0, true)
 		return
@@ -267,24 +327,26 @@ func _draw_piece(cell_rect: Rect2, piece: Dictionary) -> void:
 	draw_circle(cell_rect.get_center(), cell_rect.size.x * 0.052, line_color)
 
 	if bool(piece.get("locked", false)):
-		var lock_center := cell_rect.position + Vector2(cell_rect.size.x * 0.78, cell_rect.size.y * 0.24)
+		var lock_center := (
+			cell_rect.position + Vector2(cell_rect.size.x * 0.78, cell_rect.size.y * 0.24)
+		)
 		draw_circle(lock_center, cell_rect.size.x * 0.07, Color("101817"))
 		draw_circle(lock_center, cell_rect.size.x * 0.045, Color("d6e3cf"))
 
 
 func _draw_bloom(cell_rect: Rect2, lit: bool) -> void:
 	var center := cell_rect.get_center()
-	var radius := cell_rect.size.x * 0.075
-	var petal_radius := cell_rect.size.x * (0.13 if lit else 0.09)
+	var radius := cell_rect.size.x * 0.10
+	var petal_radius := cell_rect.size.x * (0.16 if lit else 0.11)
 	var petal_color := Color("f0f4d6") if lit else Color(0.74, 0.84, 0.76, 0.70)
 	var core_color := Color("f6c86a") if lit else Color(0.52, 0.60, 0.55, 0.90)
-	var glow_color := Color(1.0, 0.94, 0.72, 0.18) if lit else Color(0.0, 0.0, 0.0, 0.0)
+	var glow_color := Color(1.0, 0.94, 0.72, 0.22) if lit else Color(0.0, 0.0, 0.0, 0.0)
 
 	if lit:
-		draw_circle(center, cell_rect.size.x * 0.22, glow_color)
+		draw_circle(center, cell_rect.size.x * 0.28, glow_color)
 
 	for angle in [0.0, PI * 0.5, PI, PI * 1.5]:
-		var petal_offset := Vector2.RIGHT.rotated(angle) * cell_rect.size.x * 0.12
+		var petal_offset := Vector2.RIGHT.rotated(angle) * cell_rect.size.x * 0.15
 		draw_circle(center + petal_offset, petal_radius, petal_color)
 
 	draw_circle(center, radius, core_color)
@@ -294,8 +356,7 @@ func _draw_sources(board_rect: Rect2) -> void:
 	for source in sources:
 		var source_data := source as Dictionary
 		var start_point := _source_start_point(
-			String(source_data.get("side", "top")),
-			int(source_data.get("index", 0))
+			String(source_data.get("side", "top")), int(source_data.get("index", 0))
 		)
 		var center := _grid_to_local(start_point, board_rect)
 		var color := source_data.get("color", BEAM_FALLBACK) as Color
@@ -319,6 +380,35 @@ func _draw_board_frame(board_rect: Rect2) -> void:
 		2.0,
 		true
 	)
+
+
+func _draw_pulse(board_rect: Rect2) -> void:
+	if pulse_time_left <= 0.0 or pulse_cell == INVALID_CELL:
+		return
+
+	var amount := pulse_time_left / 0.42
+	var cell_rect := _cell_rect(board_rect, pulse_cell)
+	var center := cell_rect.get_center()
+	var radius := cell_rect.size.x * (0.34 + (1.0 - amount) * 0.10)
+	var glow := Color(pulse_color.r, pulse_color.g, pulse_color.b, pulse_color.a * amount * 0.28)
+	var ring := Color(pulse_color.r, pulse_color.g, pulse_color.b, pulse_color.a * amount)
+	draw_circle(center, radius * 1.08, glow)
+	draw_arc(center, radius, 0.0, TAU, 48, ring, 4.0, true)
+
+
+func _draw_win_flash(board_rect: Rect2) -> void:
+	if win_flash_time <= 0.0:
+		return
+	var amount := win_flash_time / 0.55
+	var alpha := amount * 0.16
+	draw_rect(board_rect, Color(1.0, 0.96, 0.78, alpha))
+
+
+func _pulse(cell: Vector2i, color: Color) -> void:
+	pulse_cell = cell
+	pulse_color = color
+	pulse_time_left = 0.42
+	queue_redraw()
 
 
 func _ensure_styles() -> void:
