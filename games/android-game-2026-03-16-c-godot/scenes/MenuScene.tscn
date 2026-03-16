@@ -1,0 +1,107 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu_scene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/neon_backdrop.gd" id="2"]
+
+[node name="MenuScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2")
+scene_kind = "menu"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 56
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="TopSpacer" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HeroCard" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 460)
+
+[node name="HeroContent" type="VBoxContainer" parent="SafeArea/Layout/HeroCard"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="EyebrowLabel" type="Label" parent="SafeArea/Layout/HeroCard/HeroContent"]
+layout_mode = 2
+text = "PORTRAIT ARCADE SHOOTER"
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/HeroCard/HeroContent"]
+layout_mode = 2
+text = "NEON STRIKER"
+
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/HeroCard/HeroContent"]
+layout_mode = 2
+text = "45초 동안 스카이라인 상공을 버티며 점수 연쇄를 키우는 하이텐션 사이버 슈터"
+autowrap_mode = 3
+
+[node name="HookLabel" type="Label" parent="SafeArea/Layout/HeroCard/HeroContent"]
+layout_mode = 2
+text = "한 손 드래그 이동, 자동 사격, 오버드라이브 폭발, 결과 화면까지 이어지는 상용형 짧은 출격 루프"
+autowrap_mode = 3
+
+[node name="StartButton" type="Button" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 120)
+text = "출격 시작"
+
+[node name="InfoCard" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 240)
+
+[node name="InfoContent" type="VBoxContainer" parent="SafeArea/Layout/InfoCard"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BestLabel" type="Label" parent="SafeArea/Layout/InfoCard/InfoContent"]
+layout_mode = 2
+text = "최고 기록  0점   최고 랭크  D"
+
+[node name="RulesLabel" type="Label" parent="SafeArea/Layout/InfoCard/InfoContent"]
+layout_mode = 2
+text = "조작  |  화면 드래그 이동  |  자동 사격  |  우측 OVERDRIVE 버튼으로 탄막 정리"
+autowrap_mode = 3
+
+[node name="PulseLabel" type="Label" parent="SafeArea/Layout/InfoCard/InfoContent"]
+layout_mode = 2
+text = "핵심 재미  |  패턴 회피  |  연쇄 점수  |  오버드라이브 타이밍  |  결과 랭크 갱신"
+autowrap_mode = 3
+
+[node name="BottomSpacer" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 2
+

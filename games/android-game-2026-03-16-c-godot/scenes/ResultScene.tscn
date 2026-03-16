@@ -1,0 +1,109 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/result_scene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/neon_backdrop.gd" id="2"]
+
+[node name="ResultScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2")
+scene_kind = "result"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 56
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="TopSpacer" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResultCard" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 380)
+
+[node name="ResultContent" type="VBoxContainer" parent="SafeArea/Layout/ResultCard"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="EyebrowLabel" type="Label" parent="SafeArea/Layout/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "SORTIE CLEAR"
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "랭크 B  |  스카이라인 돌파"
+
+[node name="ScoreLabel" type="Label" parent="SafeArea/Layout/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "0 점"
+
+[node name="DetailLabel" type="Label" parent="SafeArea/Layout/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "격추 0기  |  위협 단계 1  |  체류 0.0초  |  실드 100%%  |  오버드라이브 0회"
+autowrap_mode = 3
+
+[node name="BestLabel" type="Label" parent="SafeArea/Layout/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "최고 점수  0"
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MenuButton" type="Button" parent="SafeArea/Layout/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 110)
+text = "메뉴"
+
+[node name="RetryButton" type="Button" parent="SafeArea/Layout/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 110)
+text = "재출격"
+
+[node name="FooterLabel" type="Label" parent="SafeArea/Layout"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "다시 출격해 패턴 숙련도를 올리거나 메뉴로 돌아가 기록을 확인할 수 있습니다."
+autowrap_mode = 3
+
+[node name="BottomSpacer" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 2
+

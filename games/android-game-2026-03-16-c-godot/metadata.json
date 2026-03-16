@@ -1,0 +1,50 @@
+{
+  "id": "android-game-2026-03-16-c-godot",
+  "title": "Neon Striker",
+  "title_ko": "네온 스트라이커",
+  "engine": "Godot 4.2+",
+  "genre": "portrait arcade shooter",
+  "orientation": "portrait",
+  "platform_targets": [
+    "Android",
+    "Desktop"
+  ],
+  "main_scene": "res://scenes/Main.tscn",
+  "core_flow": [
+    "menu",
+    "game",
+    "result"
+  ],
+  "input": {
+    "primary": "touch drag movement",
+    "secondary": "overdrive button",
+    "fallback": [
+      "mouse drag",
+      "WASD",
+      "arrow keys",
+      "space"
+    ]
+  },
+  "features": [
+    "auto fire",
+    "combo multiplier",
+    "overdrive burst",
+    "procedural neon backdrop",
+    "best score persistence"
+  ],
+  "documents": [
+    "README.md",
+    "PLAN.md",
+    "MARKET_BENCHMARK.md",
+    "VALIDATION.md"
+  ],
+  "benchmark_sources": [
+    "https://apps.apple.com/us/app/sky-force-reloaded/id976116090",
+    "https://apps.apple.com/us/app/wing-fighter/id1562065271",
+    "https://apps.apple.com/us/app/1945-air-force-airplane-games/id1460632826",
+    "https://apps.apple.com/us/app/survivor-io/id1528941310"
+  ],
+  "created_at": "2026-03-16",
+  "status": "prototype",
+  "notes": "Commercial-feeling portrait shooter prototype created as a distinct follow-up to Glass Garden without git operations."
+}

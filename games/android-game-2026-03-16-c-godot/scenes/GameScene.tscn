@@ -1,0 +1,175 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/game_scene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/neon_backdrop.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/battlefield.gd" id="3"]
+
+[node name="GameScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2")
+scene_kind = "game"
+
+[node name="Battlefield" type="Node2D" parent="."]
+script = ExtResource("3")
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 54
+mouse_filter = 2
+
+[node name="HUD" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 22
+
+[node name="TopRow" type="HBoxContainer" parent="SafeArea/HUD"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Left" type="VBoxContainer" parent="SafeArea/HUD/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EyebrowLabel" type="Label" parent="SafeArea/HUD/TopRow/Left"]
+layout_mode = 2
+text = "NEON STRIKER  /  SKY RAID"
+
+[node name="TitleLabel" type="Label" parent="SafeArea/HUD/TopRow/Left"]
+layout_mode = 2
+text = "하이웨이 상공 교전"
+
+[node name="Right" type="VBoxContainer" parent="SafeArea/HUD/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="SafeArea/HUD/TopRow/Right"]
+layout_mode = 2
+horizontal_alignment = 2
+text = "SCORE  0"
+
+[node name="TimeLabel" type="Label" parent="SafeArea/HUD/TopRow/Right"]
+layout_mode = 2
+horizontal_alignment = 2
+text = "TIME  00:45"
+
+[node name="StatusCard" type="PanelContainer" parent="SafeArea/HUD"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 236)
+
+[node name="StatusContent" type="VBoxContainer" parent="SafeArea/HUD/StatusCard"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ComboLabel" type="Label" parent="SafeArea/HUD/StatusCard/StatusContent"]
+layout_mode = 2
+text = "CHAIN  00   MULTI  x1   THREAT  WAVE 1"
+
+[node name="ShieldRow" type="HBoxContainer" parent="SafeArea/HUD/StatusCard/StatusContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ShieldValueLabel" type="Label" parent="SafeArea/HUD/StatusCard/StatusContent/ShieldRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+text = "SHIELD  100%"
+
+[node name="ShieldBarBase" type="ColorRect" parent="SafeArea/HUD/StatusCard/StatusContent/ShieldRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 24)
+color = Color(0.06, 0.08, 0.12, 0.88)
+
+[node name="ShieldFill" type="ColorRect" parent="SafeArea/HUD/StatusCard/StatusContent/ShieldRow/ShieldBarBase"]
+layout_mode = 1
+anchors_preset = 3
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_right = 280.0
+grow_vertical = 2
+color = Color(0.2, 0.93, 0.98, 0.95)
+
+[node name="ChargeRow" type="HBoxContainer" parent="SafeArea/HUD/StatusCard/StatusContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ChargeValueLabel" type="Label" parent="SafeArea/HUD/StatusCard/StatusContent/ChargeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+text = "OVERDRIVE  24%"
+
+[node name="ChargeBarBase" type="ColorRect" parent="SafeArea/HUD/StatusCard/StatusContent/ChargeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 24)
+color = Color(0.06, 0.08, 0.12, 0.88)
+
+[node name="ChargeFill" type="ColorRect" parent="SafeArea/HUD/StatusCard/StatusContent/ChargeRow/ChargeBarBase"]
+layout_mode = 1
+anchors_preset = 3
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_right = 67.2
+grow_vertical = 2
+color = Color(0.99, 0.75, 0.3, 0.96)
+
+[node name="StatusLabel" type="Label" parent="SafeArea/HUD/StatusCard/StatusContent"]
+layout_mode = 2
+text = "드래그로 적 탄막을 비우고 연쇄 점수를 유지하세요."
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="SafeArea/HUD"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomRow" type="HBoxContainer" parent="SafeArea/HUD"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="HintCard" type="PanelContainer" parent="SafeArea/HUD/BottomRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 180)
+
+[node name="HintLabel" type="Label" parent="SafeArea/HUD/BottomRow/HintCard"]
+layout_mode = 2
+text = "왼손 또는 오른손 어느 쪽이든 화면 드래그만으로 기체를 움직일 수 있습니다.\n연쇄가 끊기기 전에 적을 격추해 멀티플라이어를 유지하고, OVERDRIVE는 근접 난전 정리에 사용하세요."
+autowrap_mode = 3
+
+[node name="ActionStack" type="VBoxContainer" parent="SafeArea/HUD/BottomRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 0)
+theme_override_constants/separation = 14
+
+[node name="RetreatButton" type="Button" parent="SafeArea/HUD/BottomRow/ActionStack"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 84)
+text = "메뉴 이탈"
+
+[node name="OverdriveButton" type="Button" parent="SafeArea/HUD/BottomRow/ActionStack"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 178)
+text = "OVERDRIVE CHARGING"
+
