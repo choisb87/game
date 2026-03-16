@@ -74,7 +74,7 @@ func _ready() -> void:
 	result_secondary_button.pressed.connect(_on_result_secondary_pressed)
 
 	_load_level(0)
-	_enter_menu()
+	_start_play(false)
 
 
 func _load_level(index: int) -> void:
