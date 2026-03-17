@@ -170,7 +170,7 @@ func _draw_city(rect: Rect2, palette: Dictionary) -> void:
 		while x < pos.x + size_local.x - 14.0:
 			var y := pos.y + 16.0
 			while y < pos.y + size_local.y - 18.0:
-				var alpha := 0.08 + 0.16 * max(sin(_time * 1.1 + x * 0.02 + y * 0.01), 0.0)
+				var alpha: float = 0.08 + 0.16 * max(sin(_time * 1.1 + x * 0.02 + y * 0.01), 0.0)
 				draw_rect(Rect2(Vector2(x, y), Vector2(8.0, 14.0)), Color(window_color.r, window_color.g, window_color.b, alpha), true)
 				y += 24.0
 			x += float(window_stride)
@@ -188,7 +188,7 @@ func _draw_sparkles(palette: Dictionary) -> void:
 	var sparkle_color: Color = palette["sparkle"]
 	for sparkle in _sparkles:
 		var pos: Vector2 = sparkle["pos"]
-		var alpha := 0.35 + max(sin(_time * sparkle["speed"] + sparkle["phase"]), 0.0) * 0.45
+		var alpha: float = 0.35 + max(sin(_time * sparkle["speed"] + sparkle["phase"]), 0.0) * 0.45
 		draw_circle(pos, sparkle["radius"], Color(sparkle_color.r, sparkle_color.g, sparkle_color.b, alpha))
 
 

@@ -125,7 +125,7 @@ func request_overdrive() -> void:
 	var survivors := []
 	for enemy in enemies:
 		var pos = enemy["pos"]
-		var distance := pos.distance_to(player_pos)
+		var distance: float = pos.distance_to(player_pos)
 		if distance < 300.0:
 			var reward := int(enemy["score"]) + 18
 			_destroy_enemy(enemy, reward, true)
@@ -347,7 +347,7 @@ func _update_pickups(delta: float) -> void:
 		pickup["age"] = float(pickup["age"]) + delta
 		var pos = pickup["pos"]
 		var vel = pickup["vel"]
-		var pull := player_pos - pos
+		var pull: Vector2 = player_pos - pos
 		if pull.length() < 320.0:
 			vel = vel.lerp(pull.normalized() * 440.0, delta * 2.4)
 		pos += vel * delta
@@ -488,10 +488,10 @@ func _spawn_player_bullet(origin: Vector2, velocity: Vector2) -> void:
 
 func _fire_enemy_shot(enemy: Dictionary) -> void:
 	var pos = enemy["pos"]
-	var target_dir := (player_pos - pos).normalized()
+	var target_dir: Vector2 = (player_pos - pos).normalized()
 	var speed := float(enemy["bullet_speed"])
 	var spread := rng.randf_range(-0.18, 0.18)
-	var velocity := target_dir.rotated(spread) * speed
+	var velocity: Vector2 = target_dir.rotated(spread) * speed
 	if velocity.y < 160.0:
 		velocity.y = 160.0
 
@@ -529,14 +529,14 @@ func _spawn_diagonal(wave: int, direction: int) -> void:
 func _spawn_arc(wave: int) -> void:
 	var count := 4 + wave
 	for index in range(count):
-		var ratio := float(index) / max(float(count - 1), 1.0)
+		var ratio: float = float(index) / max(float(count - 1), 1.0)
 		var x := lerpf(play_rect.position.x + 70.0, play_rect.end.x - 70.0, ratio)
 		var y_offset := sin(ratio * PI) * -110.0
 		_spawn_enemy("scout", Vector2(x, play_rect.position.y - 120.0 + y_offset), Vector2(0.0, 200.0 + ratio * 30.0))
 
 
 func _spawn_swoopers(wave: int) -> void:
-	var count := 2 + min(3, wave)
+	var count: int = 2 + min(3, wave)
 	for index in range(count):
 		var x := play_rect.position.x + 120.0 if index % 2 == 0 else play_rect.end.x - 120.0
 		var vel := Vector2(0.0, 210.0 + wave * 18.0)
@@ -767,7 +767,7 @@ func _spawn_sparks(pos: Vector2, color: Color, count: int, speed: float) -> void
 
 func _spawn_ring(pos: Vector2, color: Color, count: int, speed: float) -> void:
 	for index in range(count):
-		var angle := TAU * float(index) / max(float(count), 1.0)
+		var angle: float = TAU * float(index) / max(float(count), 1.0)
 		particles.append(
 			{
 				"pos": pos,

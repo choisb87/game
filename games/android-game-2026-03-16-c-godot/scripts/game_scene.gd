@@ -56,14 +56,14 @@ func _on_score_changed(value: int) -> void:
 
 
 func _on_shield_changed(value: float, max_value: float) -> void:
-	var ratio := value / max(max_value, 1.0)
+	var ratio: float = value / max(max_value, 1.0)
 	_set_bar_value(shield_fill, ratio)
 	shield_fill.color = Color(0.20, 0.93, 0.98, 0.95).lerp(Color(1.0, 0.42, 0.46, 0.98), 1.0 - ratio)
 	shield_value_label.text = "SHIELD  %d%%" % int(round(ratio * 100.0))
 
 
 func _on_charge_changed(value: float, max_value: float) -> void:
-	var ratio := value / max(max_value, 1.0)
+	var ratio: float = value / max(max_value, 1.0)
 	_set_bar_value(charge_fill, ratio)
 	charge_fill.color = Color(0.99, 0.75, 0.30, 0.96)
 	charge_value_label.text = "OVERDRIVE  %d%%" % int(round(ratio * 100.0))
