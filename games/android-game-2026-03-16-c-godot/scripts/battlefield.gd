@@ -194,14 +194,13 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if finished:
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_SPACE:
 			request_overdrive()
-			get_viewport().set_input_as_handled()
 			return
 
 	if not alive:
