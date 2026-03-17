@@ -35,17 +35,64 @@ func _ready() -> void:
 
 
 func _apply_skin() -> void:
-	score_label.add_theme_font_size_override("font_size", 34)
-	time_label.add_theme_font_size_override("font_size", 28)
+	score_label.add_theme_font_size_override("font_size", 42)
+	time_label.add_theme_font_size_override("font_size", 30)
 	wave_label.add_theme_font_size_override("font_size", 28)
 	status_label.add_theme_font_size_override("font_size", 24)
-	shield_value_label.add_theme_font_size_override("font_size", 24)
-	charge_value_label.add_theme_font_size_override("font_size", 24)
-	overdrive_button.add_theme_font_size_override("font_size", 28)
+	shield_value_label.add_theme_font_size_override("font_size", 22)
+	charge_value_label.add_theme_font_size_override("font_size", 22)
+	overdrive_button.add_theme_font_size_override("font_size", 30)
 	retreat_button.add_theme_font_size_override("font_size", 24)
 
 	for label in [score_label, time_label, wave_label, status_label, shield_value_label, charge_value_label]:
-		label.modulate = Color(0.93, 0.97, 1.0, 0.96)
+		label.modulate = Color(0.93, 0.97, 1.0, 0.98)
+
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.03, 0.07, 0.12, 0.82)
+	panel_style.border_color = Color(0.20, 0.86, 0.98, 0.22)
+	panel_style.border_width_left = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_bottom = 2
+	panel_style.corner_radius_top_left = 26
+	panel_style.corner_radius_top_right = 26
+	panel_style.corner_radius_bottom_right = 26
+	panel_style.corner_radius_bottom_left = 26
+	panel_style.shadow_color = Color(0.0, 0.0, 0.0, 0.28)
+	panel_style.shadow_size = 24
+	panel_style.shadow_offset = Vector2(0.0, 10.0)
+	$SafeArea/HUD/StatusCard.add_theme_stylebox_override("panel", panel_style)
+	$SafeArea/HUD/BottomRow/HintCard.add_theme_stylebox_override("panel", panel_style)
+
+	var primary_style := StyleBoxFlat.new()
+	primary_style.bg_color = Color(0.42, 0.26, 0.11, 0.96)
+	primary_style.border_color = Color(1.0, 0.83, 0.35, 0.34)
+	primary_style.border_width_left = 2
+	primary_style.border_width_top = 2
+	primary_style.border_width_right = 2
+	primary_style.border_width_bottom = 2
+	primary_style.corner_radius_top_left = 22
+	primary_style.corner_radius_top_right = 22
+	primary_style.corner_radius_bottom_right = 22
+	primary_style.corner_radius_bottom_left = 22
+	overdrive_button.add_theme_stylebox_override("normal", primary_style)
+	overdrive_button.add_theme_stylebox_override("hover", primary_style)
+	overdrive_button.add_theme_stylebox_override("pressed", primary_style)
+
+	var ghost_style := StyleBoxFlat.new()
+	ghost_style.bg_color = Color(0.05, 0.11, 0.16, 0.92)
+	ghost_style.border_color = Color(0.20, 0.86, 0.98, 0.24)
+	ghost_style.border_width_left = 2
+	ghost_style.border_width_top = 2
+	ghost_style.border_width_right = 2
+	ghost_style.border_width_bottom = 2
+	ghost_style.corner_radius_top_left = 18
+	ghost_style.corner_radius_top_right = 18
+	ghost_style.corner_radius_bottom_right = 18
+	ghost_style.corner_radius_bottom_left = 18
+	retreat_button.add_theme_stylebox_override("normal", ghost_style)
+	retreat_button.add_theme_stylebox_override("hover", ghost_style)
+	retreat_button.add_theme_stylebox_override("pressed", ghost_style)
 
 	_set_bar_value(shield_fill, 1.0)
 	_set_bar_value(charge_fill, 0.38)

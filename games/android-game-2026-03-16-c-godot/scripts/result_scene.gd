@@ -42,16 +42,32 @@ func set_result(data: Dictionary, is_new_best: bool, best_score: int) -> void:
 
 func _apply_skin() -> void:
 	title_label.add_theme_font_size_override("font_size", 42)
-	score_label.add_theme_font_size_override("font_size", 62)
-	eyebrow_label.add_theme_font_size_override("font_size", 22)
+	score_label.add_theme_font_size_override("font_size", 66)
+	eyebrow_label.add_theme_font_size_override("font_size", 20)
 	detail_label.add_theme_font_size_override("font_size", 24)
 	best_label.add_theme_font_size_override("font_size", 26)
 	footer_label.add_theme_font_size_override("font_size", 22)
-	retry_button.add_theme_font_size_override("font_size", 28)
+	retry_button.add_theme_font_size_override("font_size", 30)
 	menu_button.add_theme_font_size_override("font_size", 28)
 
 	for label in [eyebrow_label, title_label, score_label, detail_label, best_label, footer_label]:
 		label.modulate = Color(0.94, 0.97, 1.0, 0.97)
+
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.04, 0.06, 0.12, 0.84)
+	panel_style.border_color = Color(0.98, 0.73, 0.28, 0.22)
+	panel_style.border_width_left = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_bottom = 2
+	panel_style.corner_radius_top_left = 30
+	panel_style.corner_radius_top_right = 30
+	panel_style.corner_radius_bottom_right = 30
+	panel_style.corner_radius_bottom_left = 30
+	panel_style.shadow_color = Color(0.0, 0.0, 0.0, 0.30)
+	panel_style.shadow_size = 30
+	panel_style.shadow_offset = Vector2(0.0, 12.0)
+	$SafeArea/Layout/ResultCard.add_theme_stylebox_override("panel", panel_style)
 
 
 func _on_retry_pressed() -> void:

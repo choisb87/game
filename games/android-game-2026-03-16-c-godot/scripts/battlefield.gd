@@ -654,8 +654,10 @@ func _emit_full_state() -> void:
 
 func _set_pointer_target(point: Vector2) -> void:
 	var target := point
-	if point.y < control_rect.position.y:
-		target.y = lerpf(player_pos.y, point.y, 0.48)
+	if point.y < play_rect.position.y:
+		target.y = lerpf(player_pos.y, play_rect.position.y + 42.0, 0.4)
+	elif point.y < control_rect.position.y:
+		target.y = lerpf(player_pos.y, point.y, 0.72)
 	pointer_target = _clamp_to_playfield(target)
 
 
@@ -668,8 +670,8 @@ func _clamp_to_playfield(point: Vector2) -> Vector2:
 
 func _refresh_view() -> void:
 	view_size = get_viewport_rect().size
-	play_rect = Rect2(Vector2(58.0, 248.0), Vector2(max(view_size.x - 116.0, 200.0), max(view_size.y - 560.0, 760.0)))
-	control_rect = Rect2(Vector2(24.0, view_size.y * 0.58), Vector2(max(view_size.x - 48.0, 200.0), max(view_size.y * 0.34, 240.0)))
+	play_rect = Rect2(Vector2(46.0, 212.0), Vector2(max(view_size.x - 92.0, 200.0), max(view_size.y - 470.0, 860.0)))
+	control_rect = Rect2(Vector2(18.0, view_size.y * 0.46), Vector2(max(view_size.x - 36.0, 200.0), max(view_size.y * 0.48, 320.0)))
 
 
 func _build_backdrop() -> void:
@@ -818,20 +820,26 @@ func _draw() -> void:
 
 
 func _draw_playfield() -> void:
-	draw_rect(play_rect, Color(0.02, 0.06, 0.11, 0.42), true)
+	draw_rect(play_rect.grow(18.0), Color(0.02, 0.09, 0.16, 0.20), true)
+	draw_rect(play_rect, Color(0.01, 0.04, 0.09, 0.56), true)
 	draw_rect(play_rect.grow(4.0), Color(0.19, 0.86, 0.96, 0.18), false, 4.0)
+	for index in range(5):
+		var inset := 18.0 + float(index) * 28.0
+		draw_rect(play_rect.grow(-inset), Color(0.22, 0.94, 1.0, 0.015 + float(index) * 0.005), false, 2.0)
 
-	var horizon_y := play_rect.position.y + play_rect.size.y * 0.18
-	draw_line(Vector2(play_rect.position.x, horizon_y), Vector2(play_rect.end.x, horizon_y), Color(0.16, 0.76, 0.96, 0.2), 2.0)
+	var horizon_y := play_rect.position.y + play_rect.size.y * 0.16
+	draw_line(Vector2(play_rect.position.x, horizon_y), Vector2(play_rect.end.x, horizon_y), Color(0.16, 0.76, 0.96, 0.24), 2.0)
+	draw_circle(Vector2(play_rect.get_center().x, play_rect.position.y + play_rect.size.y * 0.14), play_rect.size.x * 0.16, Color(0.98, 0.45, 0.66, 0.08))
+	draw_circle(Vector2(play_rect.get_center().x, play_rect.position.y + play_rect.size.y * 0.14), play_rect.size.x * 0.10, Color(0.18, 0.88, 0.96, 0.10))
 
-	for index in range(9):
-		var y := horizon_y + pow(float(index) / 9.0, 1.8) * (play_rect.end.y - horizon_y)
+	for index in range(10):
+		var y := horizon_y + pow(float(index) / 10.0, 1.8) * (play_rect.end.y - horizon_y)
 		draw_line(Vector2(play_rect.position.x, y), Vector2(play_rect.end.x, y), Color(0.16, 0.56, 0.84, 0.12), 2.0)
 
-	for index in range(-4, 5):
-		var t := float(index) / 4.0
-		var top := Vector2(play_rect.get_center().x + t * 60.0, horizon_y)
-		var bottom := Vector2(play_rect.get_center().x + t * play_rect.size.x * 0.55, play_rect.end.y)
+	for index in range(-5, 6):
+		var t := float(index) / 5.0
+		var top := Vector2(play_rect.get_center().x + t * 64.0, horizon_y)
+		var bottom := Vector2(play_rect.get_center().x + t * play_rect.size.x * 0.56, play_rect.end.y)
 		draw_line(top, bottom, Color(0.14, 0.48, 0.76, 0.12), 2.0)
 
 	for building in skyline:
@@ -840,6 +848,13 @@ func _draw_playfield() -> void:
 			Vector2(float(building["width"]), float(building["height"]))
 		)
 		draw_rect(rect, Color(0.03, 0.05, 0.10, 0.85), true)
+		var wx := rect.position.x + 6.0
+		while wx < rect.end.x - 8.0:
+			var wy := rect.position.y + 10.0
+			while wy < rect.end.y - 12.0:
+				draw_rect(Rect2(Vector2(wx, wy), Vector2(4.0, 10.0)), Color(1.0, 0.78, 0.35, 0.10 + sin((wx + wy + elapsed * 60.0) * 0.03) * 0.04), true)
+				wy += 18.0
+			wx += 12.0
 
 
 func _draw_backdrop_entities() -> void:
@@ -852,6 +867,7 @@ func _draw_pickups() -> void:
 		var pos = pickup["pos"]
 		var age := float(pickup["age"])
 		var radius := 16.0 + sin(age * 6.0) * 3.0
+		draw_circle(pos, radius * 1.25, Color(0.99, 0.81, 0.30, 0.12))
 		var diamond := PackedVector2Array(
 			[
 				pos + Vector2(0.0, -radius),
@@ -862,20 +878,24 @@ func _draw_pickups() -> void:
 		)
 		draw_colored_polygon(diamond, Color(0.99, 0.81, 0.30, 0.95))
 		draw_polyline(diamond, Color(1.0, 0.95, 0.74, 0.9), 2.0, true)
+		draw_circle(pos, 5.0, Color(1.0, 0.98, 0.84, 0.95))
 
 
 func _draw_player_bullets() -> void:
 	for bullet in player_bullets:
 		var pos = bullet["pos"]
-		draw_line(pos + Vector2(0.0, 18.0), pos + Vector2(0.0, -24.0), Color(0.31, 0.95, 1.0, 0.92), 6.0)
+		draw_line(pos + Vector2(0.0, 24.0), pos + Vector2(0.0, -30.0), Color(0.18, 0.92, 1.0, 0.18), 12.0)
+		draw_line(pos + Vector2(0.0, 18.0), pos + Vector2(0.0, -24.0), Color(0.31, 0.95, 1.0, 0.96), 6.0)
 		draw_circle(pos, 4.0, Color(0.87, 0.98, 1.0, 1.0))
 
 
 func _draw_enemy_bullets() -> void:
 	for bullet in enemy_bullets:
 		var pos = bullet["pos"]
-		draw_circle(pos, float(bullet["radius"]), Color(1.0, 0.49, 0.54, 0.82))
-		draw_circle(pos, max(float(bullet["radius"]) - 4.0, 3.0), Color(1.0, 0.78, 0.82, 0.72))
+		var radius := float(bullet["radius"])
+		draw_circle(pos, radius * 1.7, Color(1.0, 0.49, 0.54, 0.10))
+		draw_circle(pos, radius, Color(1.0, 0.49, 0.54, 0.84))
+		draw_circle(pos, max(radius - 4.0, 3.0), Color(1.0, 0.78, 0.82, 0.78))
 
 
 func _draw_enemies() -> void:
@@ -984,6 +1004,7 @@ func _draw_score_popups() -> void:
 
 
 func _draw_touch_zone() -> void:
-	var color := Color(0.17, 0.88, 0.96, 0.05)
-	draw_rect(control_rect, color, true)
-	draw_rect(control_rect.grow(2.0), Color(0.17, 0.88, 0.96, 0.12), false, 2.0)
+	var pulse: float = 0.025 + max(sin(elapsed * 2.4), 0.0) * 0.018
+	draw_rect(control_rect, Color(0.17, 0.88, 0.96, pulse), true)
+	draw_rect(control_rect.grow(2.0), Color(0.17, 0.88, 0.96, 0.08), false, 2.0)
+	draw_string(ThemeDB.fallback_font, control_rect.position + Vector2(16.0, 28.0), "DRAG ZONE", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color(0.72, 0.94, 1.0, 0.45))
