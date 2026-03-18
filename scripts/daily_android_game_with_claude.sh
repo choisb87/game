@@ -28,6 +28,10 @@ MANDATORY:
   - app/src/main/res/values/*
 - Gameplay must be actually playable and fun-first (first 30s hook).
 - Monetization style: premium paid app quality (no ad bait).
+- Visual/resource quality must avoid bare-prototype feel:
+  - use better-looking game UI, icons, background motifs, and resource polish
+  - when useful, create generated image assets or use curated reference-inspired assets
+  - the result should look closer to a commercial mobile game than a debug demo
 - Include docs:
   1) README.md (Korean, with run/build instructions)
   2) PLAN.md (fun loop + retention + paid-app rationale)
@@ -44,12 +48,29 @@ Write VALIDATION.md with:
 - Native Android checks (Kotlin/Manifest/Gradle structure)
 - Gameplay/fun checks
 - Market-fit checks (from MARKET_BENCHMARK.md)
+- Visual/resource quality checks (does it look commercially presentable, or too placeholder/simple?)
 - Bug list
 - Final verdict PASS/FAIL
 If FAIL, fix and make it PASS.
 " >/tmp/claude_game_verify_${DATE_KST}.log
 
-# 3) Git commit/push (replace old daily path if exists)
+# 3) Build verification (hard gate before git push)
+export JAVA_HOME=${JAVA_HOME:-/home/sb/.local/jdk/jdk-17}
+export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/home/sb/.local/android-sdk}
+export PATH="$JAVA_HOME/bin:/home/sb/.local/gradle/gradle-8.5/bin:$PATH"
+
+cat > "$TARGET_DIR/local.properties" <<EOF
+sdk.dir=/home/sb/.local/android-sdk
+EOF
+
+cd "$TARGET_DIR"
+if ! gradle assembleRelease bundleRelease >/tmp/android_game_build_${DATE_KST}.log 2>&1; then
+  echo "BUILD FAILED for $SLUG"
+  tail -n 80 /tmp/android_game_build_${DATE_KST}.log || true
+  exit 1
+fi
+
+# 4) Git commit/push only after successful build outputs exist
 cd "$REPO_DIR"
 if [ -d "games/daily/$SLUG" ]; then
   git rm -r "games/daily/$SLUG" || true
@@ -64,7 +85,7 @@ if git diff --cached --quiet; then
   exit 0
 fi
 
-git commit -m "feat(game): native kotlin android game $DATE_KST (claude validated)"
+git commit -m "feat(game): native kotlin android game $DATE_KST (validated + built)"
 git push origin main
 
-echo "DONE: $SLUG pushed"
+echo "DONE: $SLUG pushed with build-verified APK/AAB"

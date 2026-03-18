@@ -1,0 +1,21 @@
+{
+  "title": "Shadow Dungeon",
+  "title_ko": "그림자 던전",
+  "genre": "Roguelike / Dungeon Crawler",
+  "platform": "Android (native Kotlin + Jetpack Compose)",
+  "core_loop": "Swipe to move through procedurally generated dungeon floors, fight monsters in turn-based combat, collect items and descend deeper. Death is permanent — each run tests how deep you can go.",
+  "session_length": "3-10 minutes",
+  "target_audience": "Midcore players who enjoy roguelikes, turn-based tactics, and dungeon exploration",
+  "monetization": "premium_paid",
+  "price": "$2.99",
+  "min_sdk": 24,
+  "target_sdk": 34,
+  "package_name": "com.shadowdungeon.game",
+  "version": "1.0.0",
+  "tech_stack": {
+    "language": "Kotlin 1.9.22",
+    "ui_framework": "Jetpack Compose (BOM 2024.01.00)",
+    "rendering": "Compose Canvas API",
+    "architecture": "Single-activity, immutable state, functional updates"
+  }
+}

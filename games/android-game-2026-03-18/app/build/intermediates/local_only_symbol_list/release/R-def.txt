@@ -1,0 +1,25 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color dungeon_bg
+color enemy_green
+color enemy_purple
+color enemy_red
+color floor_dark
+color floor_light
+color fog_black
+color gold_yellow
+color hud_bg
+color player_core
+color player_glow
+color potion_pink
+color shield_cyan
+color stairs_glow
+color wall_dark
+color wall_light
+color weapon_orange
+color white
+mipmap ic_launcher
+mipmap ic_launcher_foreground
+string app_name
+style Theme.ShadowDungeon

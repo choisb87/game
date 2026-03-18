@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dungeon_bg">#FF0A0E17</color>
+    <color name="wall_dark">#FF1A1F2E</color>
+    <color name="wall_light">#FF2A3040</color>
+    <color name="floor_dark">#FF151A26</color>
+    <color name="floor_light">#FF1E2433</color>
+    <color name="player_glow">#FF4FC3F7</color>
+    <color name="player_core">#FFBBDEFB</color>
+    <color name="enemy_red">#FFEF5350</color>
+    <color name="enemy_purple">#FFAB47BC</color>
+    <color name="enemy_green">#FF66BB6A</color>
+    <color name="potion_pink">#FFFF80AB</color>
+    <color name="weapon_orange">#FFFFAB40</color>
+    <color name="shield_cyan">#FF26C6DA</color>
+    <color name="gold_yellow">#FFFFD54F</color>
+    <color name="stairs_glow">#FF7E57C2</color>
+    <color name="fog_black">#FF050810</color>
+    <color name="hud_bg">#CC0D1117</color>
+</resources>

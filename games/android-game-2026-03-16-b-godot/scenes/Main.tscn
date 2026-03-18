@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/background_layer.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/board_view.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/brand_mark.svg" id="4"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -30,76 +31,156 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 48
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 36
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 42
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 30
 
 [node name="Layout" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
-theme_override_constants/separation = 20
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 18
 
 [node name="TopPanel" type="PanelContainer" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 194)
+custom_minimum_size = Vector2(0, 236)
+mouse_filter = 2
 
 [node name="TopContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
+mouse_filter = 2
+
+[node name="EyebrowLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent"]
+layout_mode = 2
+text = "BOTANICAL LIGHT ROUTING"
+mouse_filter = 2
 
 [node name="HeaderRow" type="HBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
+mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow"]
+[node name="TitleStack" type="VBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow/TitleStack"]
+layout_mode = 2
 text = "Glass Garden"
+mouse_filter = 2
 
-[node name="ProgressLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow"]
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow/TitleStack"]
 layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 2
-text = "구획 0 / 0"
-
-[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent"]
-layout_mode = 2
-text = "빛의 경로를 정렬해 잠든 꽃을 깨우세요."
 autowrap_mode = 3
+text = "빛의 경로를 정렬해 잠든 온실 구획을 되살리세요."
+mouse_filter = 2
 
-[node name="ObjectiveLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent"]
+[node name="ProgressBadge" type="PanelContainer" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow"]
 layout_mode = 2
-text = "목표: 꽃 0송이를 모두 피우세요."
+custom_minimum_size = Vector2(194, 0)
+mouse_filter = 2
+
+[node name="ProgressBadgeText" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/HeaderRow/ProgressBadge"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "복원도 0%"
+mouse_filter = 2
+
+[node name="ObjectivePanel" type="PanelContainer" parent="SafeArea/Layout/TopPanel/TopContent"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ObjectiveContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent/ObjectivePanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="ObjectiveEyebrow" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/ObjectivePanel/ObjectiveContent"]
+layout_mode = 2
+text = "이번 목표"
+mouse_filter = 2
+
+[node name="ObjectiveLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/ObjectivePanel/ObjectiveContent"]
+layout_mode = 2
 autowrap_mode = 3
+text = "꽃 0송이를 모두 피우세요."
+mouse_filter = 2
 
 [node name="StatsRow" type="HBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent"]
 layout_mode = 2
 theme_override_constants/separation = 12
+mouse_filter = 2
 
-[node name="LevelLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+[node name="StageCard" type="PanelContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="StageCardContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/StageCard"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="StageEyebrow" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/StageCard/StageCardContent"]
+layout_mode = 2
+text = "현재 구획"
+mouse_filter = 2
+
+[node name="LevelLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/StageCard/StageCardContent"]
+layout_mode = 2
 text = "새벽 온실"
+mouse_filter = 2
 
-[node name="MoveLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+[node name="MoveCard" type="PanelContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-horizontal_alignment = 1
-text = "남은 회전 0"
+mouse_filter = 2
 
-[node name="StatusLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
+[node name="MoveCardContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/MoveCard"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="MoveEyebrow" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/MoveCard/MoveCardContent"]
+layout_mode = 2
+text = "남은 회전"
+mouse_filter = 2
+
+[node name="MoveLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/MoveCard/MoveCardContent"]
+layout_mode = 2
+text = "0"
+mouse_filter = 2
+
+[node name="BloomCard" type="PanelContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-horizontal_alignment = 2
-text = "개화 0/0"
+mouse_filter = 2
+
+[node name="BloomCardContent" type="VBoxContainer" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/BloomCard"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="BloomEyebrow" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/BloomCard/BloomCardContent"]
+layout_mode = 2
+text = "개화 현황"
+mouse_filter = 2
+
+[node name="StatusLabel" type="Label" parent="SafeArea/Layout/TopPanel/TopContent/StatsRow/BloomCard/BloomCardContent"]
+layout_mode = 2
+text = "0 / 0"
+mouse_filter = 2
 
 [node name="Center" type="Control" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="BoardView" type="Control" parent="SafeArea/Layout/Center"]
 layout_mode = 1
@@ -108,89 +189,53 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_minimum_size = Vector2(720, 720)
 script = ExtResource("3")
-
-[node name="ResultDim" type="ColorRect" parent="SafeArea/Layout/Center"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0, 0, 0, 0.32)
-
-[node name="ResultCard" type="PanelContainer" parent="SafeArea/Layout/Center"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -150.0
-offset_right = 250.0
-offset_bottom = 150.0
-
-[node name="ResultContent" type="VBoxContainer" parent="SafeArea/Layout/Center/ResultCard"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="ResultEyebrow" type="Label" parent="SafeArea/Layout/Center/ResultCard/ResultContent"]
-layout_mode = 2
-horizontal_alignment = 1
-text = "구획 결과"
-
-[node name="ResultTitle" type="Label" parent="SafeArea/Layout/Center/ResultCard/ResultContent"]
-layout_mode = 2
-horizontal_alignment = 1
-text = "온실 복원"
-
-[node name="ResultText" type="Label" parent="SafeArea/Layout/Center/ResultCard/ResultContent"]
-layout_mode = 2
-horizontal_alignment = 1
-autowrap_mode = 3
-text = "빛이 다시 흐릅니다."
-
-[node name="ResultButtons" type="HBoxContainer" parent="SafeArea/Layout/Center/ResultCard/ResultContent"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="ResultSecondaryButton" type="Button" parent="SafeArea/Layout/Center/ResultCard/ResultContent/ResultButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "메뉴"
-
-[node name="ResultPrimaryButton" type="Button" parent="SafeArea/Layout/Center/ResultCard/ResultContent/ResultButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "다음 구획"
 
 [node name="BottomPanel" type="PanelContainer" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 154)
+custom_minimum_size = Vector2(0, 176)
+mouse_filter = 2
 
 [node name="BottomContent" type="VBoxContainer" parent="SafeArea/Layout/BottomPanel"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
+mouse_filter = 2
 
-[node name="HintLabel" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+[node name="HintCard" type="PanelContainer" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HintContent" type="VBoxContainer" parent="SafeArea/Layout/BottomPanel/BottomContent/HintCard"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="HintEyebrow" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent/HintCard/HintContent"]
+layout_mode = 2
+text = "레벨 힌트"
+mouse_filter = 2
+
+[node name="HintLabel" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent/HintCard/HintContent"]
 layout_mode = 2
 autowrap_mode = 3
 text = "거울 타일을 탭해서 90도 회전시키세요."
+mouse_filter = 2
 
-[node name="FeedbackLabel" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+[node name="FeedbackCard" type="PanelContainer" parent="SafeArea/Layout/BottomPanel/BottomContent"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FeedbackLabel" type="Label" parent="SafeArea/Layout/BottomPanel/BottomContent/FeedbackCard"]
 layout_mode = 2
 autowrap_mode = 3
 text = "광원 방향을 먼저 읽고, 필요한 거울만 돌리세요."
+mouse_filter = 2
 
 [node name="Buttons" type="HBoxContainer" parent="SafeArea/Layout/BottomPanel/BottomContent"]
 layout_mode = 2
 theme_override_constants/separation = 12
+mouse_filter = 2
 
 [node name="MenuButton" type="Button" parent="SafeArea/Layout/BottomPanel/BottomContent/Buttons"]
 layout_mode = 2
@@ -202,7 +247,86 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "현재 구획 다시"
 
+[node name="ResultLayer" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultDim" type="ColorRect" parent="ResultLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0.56)
+
+[node name="ResultCard" type="PanelContainer" parent="ResultLayer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -292.0
+offset_top = -230.0
+offset_right = 292.0
+offset_bottom = 230.0
+mouse_filter = 2
+
+[node name="ResultContent" type="VBoxContainer" parent="ResultLayer/ResultCard"]
+layout_mode = 2
+theme_override_constants/separation = 12
+mouse_filter = 2
+
+[node name="ResultEyebrow" type="Label" parent="ResultLayer/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "구획 결과"
+mouse_filter = 2
+
+[node name="ResultTitle" type="Label" parent="ResultLayer/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "온실 복원"
+mouse_filter = 2
+
+[node name="ResultText" type="Label" parent="ResultLayer/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "빛이 다시 흐릅니다."
+mouse_filter = 2
+
+[node name="ResultMeta" type="Label" parent="ResultLayer/ResultCard/ResultContent"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "잔여 회전 0 · 꽃 0/0"
+mouse_filter = 2
+
+[node name="ResultButtons" type="HBoxContainer" parent="ResultLayer/ResultCard/ResultContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+mouse_filter = 2
+
+[node name="ResultSecondaryButton" type="Button" parent="ResultLayer/ResultCard/ResultContent/ResultButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "메뉴"
+
+[node name="ResultPrimaryButton" type="Button" parent="ResultLayer/ResultCard/ResultContent/ResultButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "다음 구획"
+
 [node name="OverlayLayer" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -217,7 +341,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.36)
+mouse_filter = 0
+color = Color(0, 0, 0, 0.58)
 
 [node name="MenuCard" type="PanelContainer" parent="OverlayLayer"]
 layout_mode = 1
@@ -226,40 +351,68 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -270.0
-offset_top = -220.0
-offset_right = 270.0
-offset_bottom = 220.0
+offset_left = -318.0
+offset_top = -292.0
+offset_right = 318.0
+offset_bottom = 292.0
+mouse_filter = 2
 
 [node name="MenuContent" type="VBoxContainer" parent="OverlayLayer/MenuCard"]
 layout_mode = 2
 theme_override_constants/separation = 12
+mouse_filter = 2
+
+[node name="MenuMarkWrap" type="CenterContainer" parent="OverlayLayer/MenuCard/MenuContent"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MenuMark" type="TextureRect" parent="OverlayLayer/MenuCard/MenuContent/MenuMarkWrap"]
+custom_minimum_size = Vector2(320, 120)
+layout_mode = 2
+texture = ExtResource("4")
+mouse_filter = 2
 
 [node name="MenuEyebrow" type="Label" parent="OverlayLayer/MenuCard/MenuContent"]
 layout_mode = 2
 horizontal_alignment = 1
 text = "퍼즐 캠페인"
+mouse_filter = 2
 
 [node name="MenuTitle" type="Label" parent="OverlayLayer/MenuCard/MenuContent"]
 layout_mode = 2
 horizontal_alignment = 1
 text = "Glass Garden"
+mouse_filter = 2
 
 [node name="MenuText" type="Label" parent="OverlayLayer/MenuCard/MenuContent"]
 layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 text = "빛의 경로를 정렬해 다섯 개의 유리 온실 구획을 차례대로 복원하세요."
+mouse_filter = 2
+
+[node name="MenuStageCard" type="PanelContainer" parent="OverlayLayer/MenuCard/MenuContent"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MenuStageSummary" type="Label" parent="OverlayLayer/MenuCard/MenuContent/MenuStageCard"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "준비 구획 1 / 5 · 4x4 보드"
+mouse_filter = 2
 
 [node name="MenuRules" type="Label" parent="OverlayLayer/MenuCard/MenuContent"]
 layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 text = "조작: 거울 탭으로 90도 회전\n실패: 회전 제한 소진\n성공: 모든 꽃 개화"
+mouse_filter = 2
 
 [node name="MenuButtons" type="HBoxContainer" parent="OverlayLayer/MenuCard/MenuContent"]
 layout_mode = 2
 theme_override_constants/separation = 12
+mouse_filter = 2
 
 [node name="MenuSecondaryButton" type="Button" parent="OverlayLayer/MenuCard/MenuContent/MenuButtons"]
 visible = false
