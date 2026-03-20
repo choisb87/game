@@ -1,0 +1,4 @@
+#Fri Mar 20 02:09:49 UTC 2026
+base.0=/home/sb/game/games/android-game-2026-03-20/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

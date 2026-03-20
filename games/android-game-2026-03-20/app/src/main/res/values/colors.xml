@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="neon_cyan">#FF00FFFF</color>
+    <color name="neon_magenta">#FFFF00FF</color>
+    <color name="neon_yellow">#FFFFFF00</color>
+    <color name="neon_green">#FF00FF88</color>
+    <color name="neon_orange">#FFFF6600</color>
+    <color name="neon_blue">#FF4488FF</color>
+    <color name="dark_bg">#FF0A0A1A</color>
+    <color name="panel_bg">#FF151530</color>
+</resources>

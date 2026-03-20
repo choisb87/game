@@ -1,0 +1,12 @@
+{
+  "title": "Neon Breaker",
+  "title_ko": "네온 브레이커",
+  "genre": "arcade_breakout",
+  "core_loop": "drag_paddle_bounce_ball_break_neon_bricks_chain_combos_collect_powerups",
+  "session_length": "3-8min",
+  "monetization": "premium_paid",
+  "target_sdk": 34,
+  "min_sdk": 24,
+  "kotlin_compose": true,
+  "created": "2026-03-20"
+}

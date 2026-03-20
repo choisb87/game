@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Dark background circle -->
+    <path
+        android:fillColor="#0A0A1A"
+        android:pathData="M54,54m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0" />
+    <!-- Neon paddle -->
+    <path
+        android:fillColor="#00FFFF"
+        android:pathData="M30,72 L78,72 L78,76 L30,76 Z" />
+    <!-- Neon ball -->
+    <path
+        android:fillColor="#FF00FF"
+        android:pathData="M54,58m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" />
+    <!-- Bricks row 1 -->
+    <path android:fillColor="#FF6600" android:pathData="M24,30 L42,30 L42,36 L24,36 Z" />
+    <path android:fillColor="#FFFF00" android:pathData="M45,30 L63,30 L63,36 L45,36 Z" />
+    <path android:fillColor="#00FF88" android:pathData="M66,30 L84,30 L84,36 L66,36 Z" />
+    <!-- Bricks row 2 -->
+    <path android:fillColor="#4488FF" android:pathData="M24,39 L42,39 L42,45 L24,45 Z" />
+    <path android:fillColor="#FF00FF" android:pathData="M45,39 L63,39 L63,45 L45,45 Z" />
+    <path android:fillColor="#00FFFF" android:pathData="M66,39 L84,39 L84,45 L66,45 Z" />
+</vector>
